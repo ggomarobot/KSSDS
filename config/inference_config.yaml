@@ -1,0 +1,17 @@
+model_path: "/workspace/model/sentence_splitter/NLP_Project/results/checkpoint-11750" # Directory where the model is saved
+tokenizer_path: "lcw99/t5-base-korean-text-summary"  # Pretrained tokenizer name
+
+# input_tsv 와 input_sequence 중 한가지 옵션 택일 (tsv 파일 혹은 text string)
+input_tsv: "./test.tsv"  # Input TSV file path (leave blank if using text)
+input_sequence: "" # Input text for sentence splitting (leave blank if using input_tsv)
+
+output_tsv: "./KSSDS_no_len_TC.tsv"  # Output TSV file path
+batch_size: 1
+inference_mode: true
+
+# STT 모델의 할루시네이션으로 한 글자가 계속 반복될 시 그 반복된 단어를 문장처럼 분리해내기 위한 parameter 들
+repetition_detection:
+  max_repeats: 60 # 한 문장으로 인정할 최대 반복 수
+                  # max_repeats: 60 일 시, 같은 단어가 75자 반복되면 60자 / 15자 두 문장으로 분리됨
+  detection_threshold: 70 # 단어 반복을 detect 하는 최소 반복 길이
+                          # detection_threshold: 70 일 시, 70번 이하 반복은 반복으로 간주되지 않음

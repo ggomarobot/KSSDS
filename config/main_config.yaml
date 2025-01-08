@@ -1,0 +1,44 @@
+data:
+  training_dataset_folder: "/workspace/model/sentence_splitter/NLP_Project/data/training/"
+  validation_dataset_folder: "/workspace/model/sentence_splitter/NLP_Project/data/validation/"
+  test_dataset_folder: "/workspace/model/sentence_splitter/NLP_Project/data/tc/Reconstructed TC Gemini"
+  src_file_extension: ".tsv"
+
+model:
+  # model_path: "lcw99/t5-base-korean-text-summary" # 첫 훈련 시
+  model_path: "/workspace/model/sentence_splitter/NLP_Project/results/checkpoint-11750" # length filter best model 추가 훈련 시
+  num_labels: 2
+
+training:
+  output_dir: "./results"
+  per_device_train_batch_size: 8
+  per_device_eval_batch_size: 16
+  num_train_epochs: 30
+  dataloader_num_workers: 4
+  logging_dir: "./logs"
+  eval_strategy: "epoch"
+  save_total_limit: 2
+  remove_unused_columns: false # true 로 하면 label column 이 사라지므로 반드시 false 로 해야함
+  logging_strategy: "epoch"
+  save_strategy: "epoch"
+  save_safetensors: false
+  report_to:
+    - "tensorboard"
+  load_best_model_at_end: true
+  metric_for_best_model: "f1"
+  safe_serialization: false
+  early_stopping:
+    enabled: true
+    patience: 2
+
+dataset:
+  is_file: true
+  raw_data_mode: false # debug 시 토크나이저를 거치지 않은 text data 가 dataset으로 어떻게 들어가는지 확인하고 싶을 때 사용
+  max_length: 512
+  tokenizer_path: "lcw99/t5-base-korean-text-summary"
+  src_file_extension: ".tsv"
+
+dataloader:
+  shuffle_eval: false
+  raw_data_mode: false # debug 시 토크나이저를 거치지 않은 text data 가 dataloader로 어떻게 들어가는지 확인하고 싶을 때 사용
+  inference_mode: false  

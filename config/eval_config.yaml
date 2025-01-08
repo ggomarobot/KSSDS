@@ -1,0 +1,20 @@
+model:
+  model_path: "../results_KSSDS_original/checkpoint-11750"
+  tokenizer_path: "lcw99/t5-base-korean-text-summary"
+
+data:
+  test_dataset_folder: "/workspace/model/sentence_splitter/NLP_Project/data/tc/Reconstructed TC Text"
+  src_file_extension: ".tsv"
+
+training:
+  output_dir: "../results"
+  per_device_eval_batch_size: 16
+  logging_dir: "../logs"
+  report_to:
+    - "tensorboard"
+  remove_unused_columns: false # true 로 하면 label column 이 사라지므로 반드시 false 로 해야함
+
+dataloader:
+  shuffle_eval: false
+  raw_data_mode: false
+  inference_mode: false 
