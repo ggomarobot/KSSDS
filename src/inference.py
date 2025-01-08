@@ -1,6 +1,7 @@
 import yaml
 import torch
 import csv
+import transformers
 from transformers import AutoTokenizer
 from T5_encoder import T5ForTokenClassification
 from dataloader import CustomDataLoader, custom_collate_fn
@@ -215,6 +216,7 @@ class KSSDS:
                 writer.writerow([idx, sentence.strip()])
 
 if __name__ == "__main__":
+    transformers.logging.set_verbosity_error()
     config_path = "./config/inference_config.yaml"
 
     # Initialize KSSDS

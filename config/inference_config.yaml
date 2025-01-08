@@ -1,11 +1,13 @@
-model_path: "/workspace/model/sentence_splitter/NLP_Project/results/checkpoint-11750" # Directory where the model is saved
-tokenizer_path: "lcw99/t5-base-korean-text-summary"  # Pretrained tokenizer name
+# model_path: "/workspace/model/sentence_splitter/NLP_Project/results/checkpoint-11750" # Directory where the model is saved
+# tokenizer_path: "lcw99/t5-base-korean-text-summary"  # Pretrained tokenizer name
+model_path: "ggomarobot/KSSDS"
+tokenizer_path: "ggomarobot/KSSDS"
 
 # input_tsv 와 input_sequence 중 한가지 옵션 택일 (tsv 파일 혹은 text string)
-input_tsv: "./test.tsv"  # Input TSV file path (leave blank if using text)
+input_tsv: "./tests/test.tsv"  # Input TSV file path (leave blank if using text)
 input_sequence: "" # Input text for sentence splitting (leave blank if using input_tsv)
 
-output_tsv: "./KSSDS_no_len_TC.tsv"  # Output TSV file path
+output_tsv: "./KSSDS_HF_HUB_test.tsv"  # Output TSV file path
 batch_size: 1
 inference_mode: true
 
