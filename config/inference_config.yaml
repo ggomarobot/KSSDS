@@ -4,12 +4,19 @@ model_path: "ggomarobot/KSSDS"
 tokenizer_path: "ggomarobot/KSSDS"
 
 # input_tsv 와 input_sequence 중 한가지 옵션 택일 (tsv 파일 혹은 text string)
-input_tsv: "./tests/test.tsv"  # Input TSV file path (leave blank if using text)
+input_tsv: "./tests/general_test.tsv"  # Input TSV file path (leave blank if using text)
 input_sequence: "" # Input text for sentence splitting (leave blank if using input_tsv)
 
 output_tsv: "./KSSDS_HF_HUB_test.tsv"  # Output TSV file path
+output_print: true # Whether split sentence outputs will be printed out on terminal
+
 batch_size: 1
 inference_mode: true
+
+# KSSDS 를 사용할 tsv 파일의 Row 이름들
+input_columns:
+  file_path: "File Path"  # Column name for transcription file paths
+  transcription: "Transcription"  # Column name for transcriptions
 
 # STT 모델의 할루시네이션으로 한 글자가 계속 반복될 시 그 반복된 단어를 문장처럼 분리해내기 위한 parameter 들
 repetition_detection:

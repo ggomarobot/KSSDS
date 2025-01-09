@@ -1,3 +1,6 @@
 models/
 __pycache__/
 data/
+README_PYPI.md
+folder_structure.txt
+MANIFEST.in

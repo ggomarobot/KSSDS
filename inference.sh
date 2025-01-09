@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # Run inference
-python ./src/inference.py
+python ./src/KSSDS/inference.py

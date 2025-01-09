@@ -1,11 +1,11 @@
 import os
 import yaml
 from transformers import AutoTokenizer, TrainingArguments
-from dataloader import CustomDataLoader, custom_collate_fn
-from dataset import RawCustomDataset
-from trainer import CustomTrainer
-from T5_encoder import T5ForTokenClassification
-from util import compute_metrics, CombinedTensorboardCallback
+from .dataloader import CustomDataLoader, custom_collate_fn
+from .dataset import RawCustomDataset
+from .trainer import CustomTrainer
+from .T5_encoder import T5ForTokenClassification
+from .util import compute_metrics, CombinedTensorboardCallback
 
 def initialize_trainer(model, tokenizer, config, eval_dataset=None):
     """

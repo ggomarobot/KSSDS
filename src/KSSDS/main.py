@@ -1,7 +1,7 @@
 import os
 import yaml
-from train import train_model
-from evaluate import evaluate_model
+from .train import train_model
+from .evaluate import evaluate_model
 
 def collect_files(folder_path, file_extension):
     """

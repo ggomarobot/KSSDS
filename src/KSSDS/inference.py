@@ -3,17 +3,31 @@ import torch
 import csv
 import transformers
 from transformers import AutoTokenizer
-from T5_encoder import T5ForTokenClassification
-from dataloader import CustomDataLoader, custom_collate_fn
-from dataset import RawCustomDataset
+from .T5_encoder import T5ForTokenClassification
+from .dataloader import CustomDataLoader, custom_collate_fn
+from .dataset import RawCustomDataset
 
 
 class KSSDS:
-    def __init__(self, config_path):
-        # Load configuration
-        with open(config_path, 'r') as file:
-            self.config = yaml.safe_load(file)
-        
+    def __init__(self, config_path=None, model_path=None, tokenizer_path=None, max_repeats=60, detection_threshold=70):
+        if config_path:
+            # Load configuration from YAML file
+            with open(config_path, 'r') as file:
+                self.config = yaml.safe_load(file)
+        else:
+            transformers.logging.set_verbosity_error()
+            # Use default or user-provided settings
+            self.config = {
+                "model_path": model_path or "ggomarobot/KSSDS",
+                "tokenizer_path": tokenizer_path or "ggomarobot/KSSDS",
+                "repetition_detection": {
+                    "max_repeats": max_repeats,
+                    "detection_threshold": detection_threshold
+                },
+                "batch_size": 1,  # Default batch size
+                "inference_mode": True
+            }
+
         # Load model and tokenizer
         self.model_dir = self.config["model_path"]
         self.model, self.device = self.load_model()
@@ -190,30 +204,67 @@ class KSSDS:
         dataloader = self.prepare_input_data(input_sequence)
         return self.run_inference(dataloader)
 
-    def process_tsv(self, input_tsv, output_tsv):
-        with open(input_tsv, 'r', encoding='utf-8') as infile, open(output_tsv, 'w', encoding='utf-8', newline='') as outfile:
+    def process_tsv(self, input_tsv, output_tsv=None, output_print=False):
+        # Get input column names from the configuration
+        input_columns = self.config.get("input_columns", {})
+        file_path_column = input_columns.get("file_path", "File Path")  # Default: "File Path"
+        transcription_column = input_columns.get("transcription", "Transcription")  # Default: "Transcription"
+
+        # Open the input TSV file
+        with open(input_tsv, 'r', encoding='utf-8') as infile:
             reader = csv.DictReader(infile, delimiter='\t')
-            fieldnames = ['File Name', 'Index', 'Sentence']
-            writer = csv.writer(outfile, delimiter='\t')
-            writer.writerow(fieldnames)
+            fieldnames = ['File Name', 'Index', 'Sentence']  # Fixed output column names
 
+            results = []
+
+            # Process each row in the input TSV
             for row in reader:
-                file_name = row['File Path']
-                transcription = row['Transcription'].strip()
+                file_name = row.get(file_path_column, "").strip()  # Get file path
+                transcription = row.get(transcription_column, "").strip()  # Get transcription
 
+                # Split sentences using the KSSDS model
                 split_sentences = self.sentence_splitter(transcription)
 
                 for idx, sentence in enumerate(split_sentences):
-                    writer.writerow([file_name, idx, sentence.strip()])
+                    results.append((file_name, idx, sentence.strip()))
 
-    def process_input_sequence(self, input_sequence, output_tsv):
+            # Write results to output TSV if specified
+            if output_tsv:
+                with open(output_tsv, 'w', encoding='utf-8', newline='') as outfile:
+                    writer = csv.writer(outfile, delimiter='\t')
+                    writer.writerow(fieldnames)
+                    writer.writerows(results)
+
+            # Print results to terminal if specified
+            if output_print:
+                for file_name, idx, sentence in results:
+                    print(f"{file_name}\t{idx}\t{sentence}")
+
+    def process_input_sequence(self, input_sequence, output_tsv=None, output_print=False):
         split_sentences = self.sentence_splitter(input_sequence)
         
-        with open(output_tsv, 'w', encoding='utf-8', newline='') as outfile:
-            writer = csv.writer(outfile, delimiter='\t')
-            writer.writerow(['Index', 'Sentence'])
+        if output_tsv:
+            with open(output_tsv, 'w', encoding='utf-8', newline='') as outfile:
+                writer = csv.writer(outfile, delimiter='\t')
+                writer.writerow(['Index', 'Sentence'])
+                for idx, sentence in enumerate(split_sentences):
+                    writer.writerow([idx, sentence.strip()])
+
+        if output_print:
             for idx, sentence in enumerate(split_sentences):
-                writer.writerow([idx, sentence.strip()])
+                print(f"[{idx}]: {sentence.strip()}")
+
+    # function for KSSDS package; performs same task as sentence_splitter()            
+    def split_sentences(self, input_sequence):
+        """
+        Split a single string input into sentences using the model.
+        Args:
+            input_sequence (str): The input text to be split.
+        Returns:
+            List[str]: A list of split sentences.
+        """
+        dataloader = self.prepare_input_data(input_sequence)
+        return self.run_inference(dataloader)                
 
 if __name__ == "__main__":
     transformers.logging.set_verbosity_error()
@@ -226,15 +277,17 @@ if __name__ == "__main__":
     input_tsv = kssds.config.get("input_tsv")
     input_sequence = kssds.config.get("input_sequence")
     output_tsv = kssds.config["output_tsv"]
+    output_print = kssds.config.get("output_print", False)
     
     # Ensure valid input/output specification
     if (input_tsv and input_sequence) or (not input_tsv and not input_sequence):
         raise ValueError("You must specify either 'input_tsv' or input_sequence' in the configuration file, but not both.")
-    if not output_tsv:
-        raise ValueError("An 'output_tsv' file path must be specified in the config file.")        
+    # either an 'output_tsv' file path must be specified in the config file, or set output_print to True  
+    if not output_tsv and not output_print:
+        raise ValueError("You must specify either 'output_tsv' or enable 'output_print'.")       
 
     # Process inputs based on input type
     if input_tsv:
-        kssds.process_tsv(input_tsv, output_tsv)
+        kssds.process_tsv(input_tsv, output_tsv, output_print)
     elif input_sequence:
-        kssds.process_input_sequence(input_sequence, output_tsv)
+        kssds.process_input_sequence(input_sequence, output_tsv, output_print)

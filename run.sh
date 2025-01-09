@@ -4,4 +4,4 @@
 . ./env.sh
 
 # Run the main Python script
-python src/main.py
+python src/KSSDS/main.py
