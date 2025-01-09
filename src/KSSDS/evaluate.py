@@ -49,7 +49,7 @@ def evaluate_model(trainer, eval_dataset):
 
 if __name__ == "__main__":
     # Load configuration from the YAML file
-    with open("../config/eval_config.yaml", "r", encoding="utf-8") as config_file:
+    with open("../../config/eval_config.yaml", "r", encoding="utf-8") as config_file:
         config = yaml.safe_load(config_file)
 
     # Load the model and tokenizer
