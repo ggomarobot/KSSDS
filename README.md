@@ -24,12 +24,10 @@ AI HUB에서 제공하는 다양한 음성 및 텍스트 데이터를 LLM을 활
 
 ## Table of Contents
 1. [특징](#특징)
-2. [설치](#설치)
-3. [Usage](#usage)
-4. [Features](#features)
-5. [Folder Structure](#folder-structure)
-6. [License](#license)
-7. [Acknowledgments](#acknowledgments)
+2. [설치 및 사용 방법](#설치-및-사용-방법)
+3. [Folder Structure](#folder-structure)
+4. [License](#license)
+5. [Acknowledgments](#acknowledgments)
 
 ---
 
@@ -59,67 +57,87 @@ KSSDS는 한국어 대화 시스템 용 문장 분리에 특화된 딥러닝 기
 > 아직 부족한 부분이 많기에 개발자분들의 많은 관심과 기여 부탁드립니다.
 
 
-## 설치
+## 2. 설치 및 사용 방법
 
-### Using PyPI
-Install KSSDS via pip:
+KSSDS는 GitHub에서 코드를 직접 받아 사용하는 방법과, PyPI를 통해 패키지를 설치하여 사용하는 두 가지 방법을 제공합니다.  
+각각의 설치 및 사용 방법은 아래를 참고하세요.
+
+### 2.1 GitHub에서 설치하기
+
+GitHub 저장소에서 코드를 다운로드하면, 추가 학습, 평가, 추론 등 다양한 작업을 지원하는 스크립트를 사용할 수 있습니다.
+
+#### 설치
+1. GitHub 저장소를 클론합니다.
+   ```bash
+   git clone https://github.com/ggomarobot/KSSDS.git
+   cd KSSDS
+   ```
+2. 의존성을 설치합니다.
+   ```bash
+   pip install -r requirements.txt    
+   ```
+
+#### 사용
+
+- **추가 학습**: `./run.sh` 를 실행하여 학습을 수행합니다.
+    ```bash
+    ./run.sh
+    ```
+    - 기본적으로 `config/main_config.yaml` 파일의 설정을 따릅니다.
+    - 필요한 경우 `main_config.yaml`을 수정하여 학습 데이터 경로, 모델 저장 경로, 배치 크기 등을 조정하세요.
+
+- **평가**: `./evaluate.sh` 를 실행하여 학습된 모델의 성능을 평가합니다.
+    ```bash
+    ./evaluate.sh
+    ```
+    - 평가 설정은 `config/eval_config.yaml` 파일에서 제어할 수 있습니다.
+
+- **추론**: `./inference.sh` 를 실행하여 문장 분리를 수행합니다.
+    ```bash
+    ./inference.sh
+    ```
+    - `config/inference_config.yaml` 파일을 사용하여 입력 데이터 경로 및 출력 형식을 설정할 수 있습니다.
+
+### 2.2 PyPI에서 설치하기
+
+PyPI를 통해 KSSDS 패키지를 설치하고 사용할 수 있습니다. 이 경우, 간단한 문장 분리 기능만 제공되며, 추가 학습이나 평가 기능은 지원되지 않습니다.
+
+#### 설치
+
+아래 명령어를 사용하여 KSSDS를 설치할 수 있습니다:
+
 ```bash
 pip install KSSDS
 ```
 
-### Clone the Repository
+#### 사용 방법
 
-Alternatively, clone the GitHub repository:
-```bash
-git clone https://github.com/ggomarobot/KSSDS.git
-cd KSSDS
-pip install -e .
-```
-
----
-
-## Usage
-
-### Inference Example
-
-#### From Python Script:
-
+설치 후, KSSDS는 Python 코드에서 다음과 같이 사용할 수 있습니다:
 
 ```python
 from KSSDS import KSSDS
 
-# Initialize the model
+# KSSDS 클래스 초기화
 kssds = KSSDS()
 
-# Split sentences
+# 입력 텍스트
 input_text = "안녕하세요. 오늘 날씨가 참 좋네요. 저는 산책을 나갈 예정입니다."
+
+# 문장 분리 실행
 split_sentences = kssds.split_sentences(input_text)
 
-# Print results
+# 결과 출력
 for idx, sentence in enumerate(split_sentences):
     print(f"{idx + 1}: {sentence}")
 ```
-
+#### 출력 예시
 <pre style="background-color:#F5EDED; color:white; padding:10px; border-radius:5px; font-family:monospace;">
 <span style="color:#a29acb;">1: 안녕하세요.</span>
 <span style="color:#c3adad;">2: 오늘 날씨가 참 좋네요.</span>
 <span style="color:YellowGreen;">3: 저는 산책을 나갈 예정입니다.</span>
 </pre>
 
-#### From Terminal:
-
-```bash
-python ./src/inference.py --config_path ./config/inference_config.yaml
-```
-
-## Features
-- **Repetition Detection**: Handles STT hallucinations by detecting and splitting repetitive patterns.
-
-- **High Accuracy**: Fine-tuned on diverse datasets to ensure precise sentence splitting.
-
-- **Configurable**: Adjust parameters such as repetition thresholds via YAML configuration files.
-
-- **Multi-Platform Support**: Compatible with both text and TSV inputs.
+> **Note: PyPI 패키지로 설치한 KSSDS는 추가적인 설정 파일(YAML) 없이 기본 설정값을 사용하여 동작합니다.**
 
 ---
 
