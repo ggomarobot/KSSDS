@@ -14,7 +14,7 @@
 
 KSSDS는 이러한 한계를 극복하기 위해 개발된 모델로, 트랜스포머 기반 딥러닝을 활용하여 대화 시스템에서도 안정적이고 유연한 문장 분리를 목표로 합니다.
 
-KSSDS는 HuggingFace Hub의 `lcw99/t5-base-korean-text-summary` 모델[^1]을 기반으로 하며,  
+KSSDS는 HuggingFace Hub의 `lcw99/t5-base-korean-text-summary` [모델](https://huggingface.co/lcw99/t5-base-korean-text-summary)을 기반으로 하며,  
 AI HUB에서 제공하는 다양한 음성 및 텍스트 데이터를 LLM을 활용해 개별 문장으로 분리(Pseudo-Label)한 후,  
 각 문장의 끝 토큰을 종결 어미로 간주하여 token classification 모델로 Fine-Tuning하여 제작되었습니다.
 
@@ -43,7 +43,7 @@ KSSDS는 한국어 대화 시스템 용 문장 분리에 특화된 딥러닝 기
     KSSDS는 딥러닝 모델을 기반으로 이러한 의존도를 줄이고, 구두점 유무와 관계없이 보다 자연스러운 문장 분리가 가능합니다.
 
 2. **반복되는 단어 처리**  
-    특정 단어나 구문이 반복적으로 나타날 경우 이를 자동으로 감지하고 문장으로 분리하는 기능을 제공합니다. OpenAI Whisper와 같은 STT 모델은 충분한 정보를 얻지 못할 경우, 이전에 생성된 단어나 구문을 반복적으로 출력하는 경향이 있습니다. Whisper는 텍스트 생성 시 마지막 224개의 토큰만을 참고하여 다음 단어를 예측하는데[^2], 이로 인해 충분한 정보를 확보하지 못할 경우 동일한 단어가 최대 223번 반복되는 현상이 자주 관찰됩니다.
+    특정 단어나 구문이 반복적으로 나타날 경우 이를 자동으로 감지하고 문장으로 분리하는 기능을 제공합니다. OpenAI Whisper와 같은 STT 모델은 충분한 정보를 얻지 못할 경우, 이전에 생성된 단어나 구문을 반복적으로 출력하는 경향이 있습니다[^1]. Whisper는 텍스트 생성 시 마지막 224개의 토큰만을 참고하여 다음 단어를 예측하는데[^2], 이로 인해 충분한 정보를 확보하지 못할 경우 동일한 단어가 최대 223번 반복되는 현상이 자주 관찰됩니다.
 
     이러한 반복 구문은 기존의 규칙 또는 통계 기반 문장 분리기에서는 사전적 의미의 "문장"으로 간주되지 않아 처리가 어렵습니다.
     그러나 KSSDS는 문장 분리 후 추가적인 Rule을 적용하여 비정상적으로 긴 반복 구문을 감지하고, 이를 적절히 분리함으로써 후속 NLP 모델의 입력 길이 제한을 초과하지 않도록 최적화된 결과를 제공합니다.
@@ -147,6 +147,6 @@ python ./src/inference.py --config_path ./config/inference_config.yaml
 This project is licensed under the [MIT License](LICENSE). You are free to use, modify, and distribute this project, provided that proper credit is given to the original author. See the [LICENSE](LICENSE) file for more details.
 
 
-[^1]:[lcw99/t5-base-korean-text-summary 모델](https://huggingface.co/lcw99/t5-base-korean-text-summary)
+[^1]:[Whisper word repeat issue](https://github.com/jhj0517/Whisper-WebUI/issues/238)
 
 [^2]: [OpenAI Whisper Discussion - Token Limit](https://github.com/openai/whisper/discussions/1824#discussioncomment-7620322)
