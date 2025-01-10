@@ -23,8 +23,8 @@ AI HUB에서 제공하는 다양한 음성 및 텍스트 데이터를 LLM을 활
 ---
 
 ## Table of Contents
-1. [특징](#특징)
-2. [설치 및 사용 방법](#설치-및-사용-방법)
+1. [특징]((#1-특징))
+2. [설치 및 사용 방법](#2-설치-및-사용-방법)
 3. [Folder Structure](#folder-structure)
 4. [License](#license)
 5. [Acknowledgments](#acknowledgments)
