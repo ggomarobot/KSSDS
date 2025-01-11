@@ -166,7 +166,7 @@ for idx, sentence in enumerate(split_sentences):
 ├── src/KSSDS # Source codes for KSSDS package modules
 ├── tests     # Unit tests
 ├── data      # Placeholder for datasets (see the README inside for Google Drive link) 
-├── models    # Placeholder for KSSDS models (see the README inside for HuggingFace Hub link)  
+├── models    # Placeholder for KSSDS models (see the README inside for HF Hub link)  
 ├── notebooks # Jupyter notebooks for analysis
 │ 
 ├── env.sh # Script to set up the environment variables 
@@ -177,6 +177,12 @@ for idx, sentence in enumerate(split_sentences):
 ├── setup.py # Python setup file for packaging the project 
 └── tests # Unit tests and examples for the package
 ```
+
+### Notes:
+- **`data`**: This folder is excluded from the repository due to its size. Refer to the README inside the `data` folder for instructions and a Google Drive link.
+- **`config`**: The YAML files allow users to customize the behavior of training, evaluation, and inference.
+- **`notebooks`**: These provide step-by-step usage examples, including comparisons with other models like Kiwi and KSS.
+- **`src/KSSDS`**: Contains the main code for the KSSDS package, including the inference module.
 
 ## License
 

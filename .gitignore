@@ -1,6 +1,6 @@
-models/
+KSSDS_models/
 __pycache__/
-data/
+KSSDS_data/
 README_PYPI.md
 folder_structure.txt
 MANIFEST.in
