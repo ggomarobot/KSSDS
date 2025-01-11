@@ -25,6 +25,16 @@ from KSSDS import KSSDS
 
 # 기본 설정으로 KSSDS 모델 호출
 kssds = KSSDS()
+
+# 입력 텍스트
+input_text = "안녕하세요. 오늘 날씨가 참 좋네요. 저는 산책을 나갈 예정입니다."
+
+# 문장 분리 실행
+split_sentences = kssds.split_sentences(input_text)
+
+# 결과 출력
+for idx, sentence in enumerate(split_sentences):
+    print(f"{idx + 1}: {sentence}")
 ```
 
 ### 기본 값 및 사용자 설정 가능 파라미터
