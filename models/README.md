@@ -5,8 +5,8 @@ KSSDS 모델과 관련된 두 가지 HuggingFace Hub 링크를 제공합니다. 
 ## HuggingFace Hub 모델 링크
 
 - [**KSSDS**](https://huggingface.co/ggomarobot/KSSDS)  
-  - 학습 데이터셋에서 적절한 길이 필터를 적용하여 학습된 KSSDS의 공식 모델입니다.  
-  - Whisper와 같은 STT 모델에서 생성된 긴 텍스트를 보다 정확하게 분리할 수 있도록 설계되었습니다.
+  - 학습 데이터셋에서 적절한 Length Filter를 적용하여 학습된 KSSDS의 공식 모델입니다.  
+  - Whisper와 같은 STT 모델에서 생성된 transcription을 보다 정확하게 분리할 수 있도록 설계되었습니다.
 
 - [**KSSDS_NO_LF**](https://huggingface.co/ggomarobot/KSSDS_NO_LF)  
   - Length Filter를 적용하지 않은 ablation study 용 모델입니다.  

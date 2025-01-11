@@ -25,9 +25,8 @@ AI HUB에서 제공하는 다양한 음성 및 텍스트 데이터를 LLM을 활
 ## Table of Contents
 1. [특징](#1-특징)
 2. [설치 및 사용 방법](#2-설치-및-사용-방법)
-3. [Folder Structure](#folder-structure)
-4. [License](#license)
-5. [Acknowledgments](#acknowledgments)
+3. [폴더 구조](#3-폴더-구조)
+4. [License](#4-license)
 
 ---
 
@@ -143,48 +142,26 @@ for idx, sentence in enumerate(split_sentences):
 
 ---
 
-## Folder Structure
+## 3. 폴더 구조
 ```
 .
-├── config                   # Configuration files (YAML)
-├── data                     # Training and evaluation data (excluded from the repo)
-├── notebooks                # Jupyter notebooks for analysis and experiments
-├── src                      # Source code
-│   ├── KSSDS                # KSSDS package modules
-│   │   ├── __init__.py      # Package initializer
-│   │   ├── inference.py     # Main inference logic
-│   │   ├── dataloader.py    # Custom dataloaders
-│   │   └── dataset.py       # Dataset handling
-├── tests                    # Unit tests
-├── LICENSE                  # License information
-├── README.md                # Project documentation
-├── requirements.txt         # Dependencies
-└── setup.py                 # Installation script
+├── config        # YAML configuration files for training, evaluation, and inference
+├── data          # Placeholder for datasets (README inside includes Google Drive link)
+├── models        # Placeholder for KSSDS models (README inside includes HF Hub links)
+├── notebooks     # Jupyter notebooks for performance analysis and visualization
+├── src/KSSDS     # Source code for KSSDS package modules
+├── tests         # Unit tests for validating functionality
+│
+├── env.sh        # Script to set up environment variables
+├── evaluate.sh   # Shell script to run model evaluation
+├── inference.sh  # Shell script for inference tasks
+├── requirements.txt # Required Python dependencies
+├── run.sh        # Shell script to start training
+└── setup.py      # Script for installing the package
 
-. 
-├── config    # Configuration files (YAML) for training, evaluation, and inference 
-├── src/KSSDS # Source codes for KSSDS package modules
-├── tests     # Unit tests
-├── data      # Placeholder for datasets (see the README inside for Google Drive link) 
-├── models    # Placeholder for KSSDS models (see the README inside for HF Hub link)  
-├── notebooks # Jupyter notebooks for analysis
-│ 
-├── env.sh # Script to set up the environment variables 
-├── evaluate.sh # Shell script to run evaluation 
-├── inference.sh # Shell script to perform inference 
-├── requirements.txt # List of Python dependencies 
-├── run.sh # Shell script to start training 
-├── setup.py # Python setup file for packaging the project 
-└── tests # Unit tests and examples for the package
 ```
 
-### Notes:
-- **`data`**: This folder is excluded from the repository due to its size. Refer to the README inside the `data` folder for instructions and a Google Drive link.
-- **`config`**: The YAML files allow users to customize the behavior of training, evaluation, and inference.
-- **`notebooks`**: These provide step-by-step usage examples, including comparisons with other models like Kiwi and KSS.
-- **`src/KSSDS`**: Contains the main code for the KSSDS package, including the inference module.
-
-## License
+## 4. License
 
 This project is licensed under the [MIT License](LICENSE). You are free to use, modify, and distribute this project, provided that proper credit is given to the original author. See the [LICENSE](LICENSE) file for more details.
 

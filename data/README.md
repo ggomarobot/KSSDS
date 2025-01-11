@@ -1,8 +1,8 @@
-### Google Drive 링크
+# Data 폴더 안내
+
+## Google Drive 링크
 `data` 폴더와 관련된 전체 데이터셋은 이 [Google Drive 링크](https://drive.google.com/drive/folders/19qa1AKetvRZvfOWcGL_BOj-z43sTElhH?usp=sharing)를 통해 확인할 수 있습니다. 
 각 폴더에 대한 자세한 내용은 아래 설명을 참고해주세요.
-
----
 
 ## Data 폴더 구조
 ```
