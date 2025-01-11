@@ -49,7 +49,7 @@ KSSDS는 한국어 대화 시스템 용 문장 분리에 특화된 딥러닝 기
 3. **딥러닝 기반의 문장 분리**  
     KSSDS는 T5 모델의 Encoder를 Fine-Tuning하여 학습된 모델로, 어순 도치와 같은 복잡한 문장 구조에서도 기존의 KSS 또는 Kiwi보다 우수한 성능을 보이는 경우가 많습니다. 단순히 종결 어미에 의존하기보다는, 문장의 의미를 기반으로 한 문장 분리 방식을 제공합니다.
 
-자세한 문장 분리 결과는 이 Google Colab [notebook](https://colab.research.google.com/drive/1gudvMJ4NDwk-V6Qh1VP2g3kL5QRicfc4?usp=sharing)에서 확인 가능합니다.
+자세한 문장 분리 결과는 이 [Google Colab notebook](https://colab.research.google.com/drive/1gudvMJ4NDwk-V6Qh1VP2g3kL5QRicfc4?usp=sharing)에서 확인 가능합니다.
 
 ---
 

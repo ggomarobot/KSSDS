@@ -1,3 +1,9 @@
+### Google Drive 링크
+`data` 폴더와 관련된 전체 데이터셋은 이 [Google Drive 링크](https://drive.google.com/drive/folders/19qa1AKetvRZvfOWcGL_BOj-z43sTElhH?usp=sharing)를 통해 확인할 수 있습니다. 
+각 폴더에 대한 자세한 내용은 아래 설명을 참고해주세요.
+
+---
+
 ## Data 폴더 구조
 ```
 data
@@ -16,7 +22,7 @@ data
 │   └── script                          
 │       ├── step1.sh                    
 │       ├── step1_config.yaml           
-│       └── whisper_process_for_audio.py # AI HUB에서 받은 음성 파일들을 Whisper를 활용해 transcribe하는 코드
+│       └── whisper_process_for_audio.py # AI HUB에서 받은 음성 파일들을 Whisper를 활용해 transcribe하는 스크립트
 │
 ├── 2. LLM split                         # LLM(ChatGPT, Gemini)을 사용해 분리된 데이터
 │   ├── 1. train
@@ -35,7 +41,7 @@ data
 │   │       └── Gemini                 
 │   │
 │   └── script
-│       └── LLM_split.py                # LLM을 활용해 "1. raw"의 음성 데이터를 분리하는 코드
+│       └── LLM_split.py                # LLM을 활용해 "1. raw"의 음성 데이터를 분리하는 스크립트
 │
 ├── 3. confidence evaluation            # LLM 결과에 대한 신뢰도 평가
 │   ├── 1. train
@@ -122,9 +128,3 @@ data
 
 - **misc**  
   - `sanity_check_and_split.py`: 최종 데이터의 라벨과 토큰 갯수가 일치하는지 검증 및 디버깅 용으로 다시 개별 문장으로 되돌리기 위한 스크립트.
-
----
-
-### Google Drive 링크
-`data` 폴더와 관련된 전체 데이터셋은 [Google Drive 링크](https://drive.google.com/drive/folders/19qa1AKetvRZvfOWcGL_BOj-z43sTElhH?usp=sharing)를 통해 확인할 수 있습니다. 
-각 폴더에 대한 자세한 내용은 위 설명을 참고해주세요.
