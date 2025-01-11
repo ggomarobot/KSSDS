@@ -22,15 +22,11 @@ AI HUB에서 제공하는 다양한 음성 및 텍스트 데이터를 LLM을 활
 
 자세한 과정은 이 [프레젠테이션 슬라이드](#)에서 확인하실 수 있습니다. (업로드 예정)
 
----
-
 ## Table of Contents
 1. [특징](#1-특징)
 2. [설치 및 사용 방법](#2-설치-및-사용-방법)
 3. [폴더 구조](#3-폴더-구조)
 4. [License](#4-license)
-
----
 
 ## 1. 특징
 
@@ -51,8 +47,6 @@ KSSDS는 한국어 대화 시스템 용 문장 분리에 특화된 딥러닝 기
     KSSDS는 T5 모델의 Encoder를 Fine-Tuning하여 학습된 모델로, 어순 도치와 같은 복잡한 문장 구조에서도 기존의 KSS 또는 Kiwi보다 우수한 성능을 보이는 경우가 많습니다. 단순히 종결 어미에 의존하기보다는, 문장의 의미를 기반으로 한 문장 분리 방식을 제공합니다.
 
 자세한 문장 분리 결과는 이 [Google Colab notebook](https://colab.research.google.com/drive/1gudvMJ4NDwk-V6Qh1VP2g3kL5QRicfc4?usp=sharing)에서 확인 가능합니다.
-
----
 
 > **Note**: 
 > KSSDS는 연구 목적으로 개인이 개발한 초기 모델로, 학습 데이터의 한계로 인해 일부 데이터셋에서는 성능 차이가 발생할 수 있습니다. 
@@ -142,7 +136,6 @@ for idx, sentence in enumerate(split_sentences):
 
 > **Note: PyPI 패키지로 설치한 KSSDS는 추가적인 설정 파일(YAML) 없이 기본 설정값을 사용하여 동작합니다.**
 
----
 
 ## 3. 폴더 구조
 ```
