@@ -18,7 +18,7 @@ KSSDS는 HuggingFace Hub의 `lcw99/t5-base-korean-text-summary` [모델](https:/
 AI HUB에서 제공하는 다양한 음성 및 텍스트 데이터를 LLM을 활용해 개별 문장으로 분리(Pseudo-Label)한 후,  
 각 문장의 끝 토큰을 종결 어미로 간주하여 token classification 모델로 Fine-Tuning하여 제작되었습니다.
 
-자세한 과정은 이 [프레젠테이션 슬라이드](#)에서 확인하실 수 있습니다. 
+자세한 과정은 이 [프레젠테이션 슬라이드](#)에서 확인하실 수 있습니다. (업로드 예정)
 
 ---
 
@@ -145,19 +145,19 @@ for idx, sentence in enumerate(split_sentences):
 ## 3. 폴더 구조
 ```
 .
-├── config        # YAML configuration files for training, evaluation, and inference
-├── data          # Placeholder for datasets (README inside includes Google Drive link)
-├── models        # Placeholder for KSSDS models (README inside includes HF Hub links)
-├── notebooks     # Jupyter notebooks for performance analysis and visualization
-├── src/KSSDS     # Source code for KSSDS package modules
-├── tests         # Unit tests for validating functionality
+├── config           # YAML configuration files for training, evaluation, and inference
+├── data             # Placeholder for datasets (README inside includes Google Drive link)
+├── models           # Placeholder for KSSDS models (README inside includes HF Hub links)
+├── notebooks        # Jupyter notebooks for performance analysis and visualization
+├── src/KSSDS        # Source code for KSSDS package modules
+├── tests            # Unit tests for validating functionality
 │
-├── env.sh        # Script to set up environment variables
-├── evaluate.sh   # Shell script to run model evaluation
-├── inference.sh  # Shell script for inference tasks
+├── env.sh           # Script to set up environment variables
+├── evaluate.sh      # Shell script to run model evaluation
+├── inference.sh     # Shell script for inference tasks
 ├── requirements.txt # Required Python dependencies
-├── run.sh        # Shell script to start training
-└── setup.py      # Script for installing the package
+├── run.sh           # Shell script to start training
+└── setup.py         # Script for installing the package
 
 ```
 
