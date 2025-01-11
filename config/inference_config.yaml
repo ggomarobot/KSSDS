@@ -1,5 +1,3 @@
-# model_path: "/workspace/model/sentence_splitter/NLP_Project/results/checkpoint-11750" # Directory where the model is saved
-# tokenizer_path: "lcw99/t5-base-korean-text-summary"  # Pretrained tokenizer name
 model_path: "ggomarobot/KSSDS"
 tokenizer_path: "ggomarobot/KSSDS"
 

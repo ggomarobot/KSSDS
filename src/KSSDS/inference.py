@@ -9,7 +9,7 @@ from .dataset import RawCustomDataset
 
 
 class KSSDS:
-    def __init__(self, config_path=None, model_path=None, tokenizer_path=None, max_repeats=60, detection_threshold=70):
+    def __init__(self, config_path=None, model_path=None, batch_size=1, tokenizer_path=None, max_repeats=60, detection_threshold=70):
         if config_path:
             # Load configuration from YAML file
             with open(config_path, 'r') as file:
@@ -24,7 +24,7 @@ class KSSDS:
                     "max_repeats": max_repeats,
                     "detection_threshold": detection_threshold
                 },
-                "batch_size": 1,  # Default batch size
+                "batch_size": batch_size or 1,  # Default batch size
                 "inference_mode": True
             }
 
