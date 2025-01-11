@@ -10,9 +10,11 @@
 [KSSDS](https://huggingface.co/ggomarobot/KSSDS) 는 딥러닝 기반의 한국어 문장 분리 모델입니다.
 
 기존의 한국어 문장 분리기([KSS](https://github.com/hyunwoongko/kss), [Kiwi](https://github.com/bab2min/Kiwi) 등)는 규칙 또는 통계 기반의 모델로, 종결 어미나 구두점에 크게 의존하는 경향이 있습니다.  
-이러한 특성 때문에, STT(Speech-to-Text) 모델을 통해 생성된 텍스트에서 자주 발생하는 변칙적인 사례(예: 구두점 생략, 어순 도치 등)에 효과적으로 대응하기 어려운 한계가 있습니다.
+이러한 특성 때문에, STT(Speech-to-Text) 모델을 통해 생성된 텍스트에서 자주 발생하는 변칙적인 사례  
+(예: 구두점 생략, 어순 도치 등)에 효과적으로 대응하기 어려운 한계가 있습니다.
 
-KSSDS는 이러한 한계를 극복하기 위해 개발된 모델로, 트랜스포머 기반 딥러닝을 활용하여 대화 시스템에서도 안정적이고 유연한 문장 분리를 목표로 합니다.
+KSSDS는 이러한 한계를 극복하기 위해 개발된 모델로,  
+트랜스포머 기반 딥러닝을 활용하여 대화 시스템에서도 안정적이고 유연한 문장 분리를 목표로 합니다.
 
 KSSDS는 HuggingFace Hub의 `lcw99/t5-base-korean-text-summary` [모델](https://huggingface.co/lcw99/t5-base-korean-text-summary)을 기반으로 하며,  
 AI HUB에서 제공하는 다양한 음성 및 텍스트 데이터를 LLM을 활용해 개별 문장으로 분리(Pseudo-Label)한 후,  
