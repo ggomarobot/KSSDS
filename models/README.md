@@ -19,7 +19,7 @@ KSSDS 모델과 관련된 두 가지 HuggingFace Hub 링크를 제공합니다. 
 KSSDS를 체험하거나 활용할 수 있는 방법은 다음 세 가지가 있습니다:
 
 1. **PyPI 설치 (권장)**  
-   PyPI를 통해 KSSDS를 설치하여 간단한 문장 분리 기능을 빠르게 활용할 수 있습니다.  
+   PyPI를 통해 KSSDS를 설치하여 문장 분리 기능을 빠르게 활용할 수 있습니다.  
    PyPI 설치와 관련된 자세한 내용은 [루트 디렉토리 README의 PyPI 설치 섹션](../README.md#22-pypi에서-설치하기)을 참조하세요.
 
 2. **GitHub 설치**  
@@ -31,8 +31,8 @@ KSSDS를 체험하거나 활용할 수 있는 방법은 다음 세 가지가 있
    T5 Encoder와 모델 관련 설정 파일을 동적으로 다운로드하여 사용할 수 있으며, [Hugging Face Hub 모델 사용법](https://huggingface.co/ggomarobot/KSSDS)을 참조하세요.
 
 > 각 방식의 장단점은 다음과 같습니다:  
-> - PyPI: 간편한 설치 및 사용, 기본 설정만 지원  
-> - GitHub: 고급 기능 제공, 추가적인 학습 및 평가 가능  
+> - PyPI: 간편한 설치 및 사용, 추론 기능만 지원  
+> - GitHub: 추론 기능 외에도 추가적인 학습 및 평가 가능  
 > - Hugging Face Hub: 특정 환경에서 빠르게 모델 활용 가능   
 
 아래는 PyPI 및 GitHub 방식으로 설치 후 사용하는 방법에 대한 예제입니다:
@@ -94,7 +94,6 @@ from KSSDS import KSSDS
 
 # 사용자 정의 파라미터로 KSSDS 초기화
 kssds_custom = KSSDS(
-    batch_size=4,
     max_repeats=50,  # 반복 단어를 50개 단위로 분리
     detection_threshold=100  # 최소 반복 길이를 100으로 설정
 )

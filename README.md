@@ -57,7 +57,7 @@ KSSDS는 한국어 대화 시스템 용 문장 분리에 특화된 딥러닝 기
 ## 2. 설치 및 사용 방법
 
 KSSDS는 GitHub에서 코드를 직접 받아 사용하는 방법과, PyPI를 통해 패키지를 설치하여 사용하는 두 가지 방법을 제공합니다.  
-GitHub 설치는 추가 학습, 평가, 추론 등 모든 기능을 지원하며, PyPI 설치는 간단한 추론 작업에 적합합니다.
+GitHub 설치는 추가 학습, 평가, 추론 등 모든 기능을 지원하며, PyPI 설치는 추론 작업에 적합합니다.
 
 
 각각의 설치 및 사용 방법은 아래를 참고하세요.
@@ -183,10 +183,10 @@ for idx, sentence in enumerate(split_sentences):
 ├── data             # Placeholder for datasets (README inside includes Google Drive link)
 ├── models           # Placeholder for KSSDS models (README inside includes HF Hub links)
 ├── notebooks        # Jupyter notebooks for performance analysis and visualization
-├── src                      # Source code for the KSSDS package and utility modules
-│   ├── KSSDS                # Core modules for the KSSDS package (e.g., inference, T5 encoder)
-│   ├── utils                # Utility modules for training, evaluation, and data processing
-├── scripts                  # Standalone scripts for training, evaluation, and inference pipelines
+├── src              # Source code for the KSSDS package and utility modules
+│   ├── KSSDS        # Core modules for the KSSDS package (e.g., inference, T5 encoder)
+│   ├── utils        # Utility modules for training, evaluation, and data processing
+├── scripts          # Standalone scripts for training, evaluation, and inference pipelines
 ├── tests            # Unit tests for validating functionality
 │
 ├── env.sh           # Script to set up environment variables

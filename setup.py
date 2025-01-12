@@ -2,14 +2,14 @@ from setuptools import setup, find_packages
 
 setup(
     name="KSSDS",
-    version="1.0.1",
+    version="1.0.2",
     author="Gun Yang",
     author_email="ggomarobot@gmail.com",
     description="Korean Sentence Splitter for Dialogue Systems",
     long_description=open("README_PYPI.md").read(),
     long_description_content_type="text/markdown",
     url="https://github.com/ggomarobot/KSSDS",
-    packages=find_packages(where="src"),
+    packages=find_packages(where="src", include=["KSSDS*"]),  # "KSSDS"와 하위 패키지만 포함
     package_dir={"": "src"},
     include_package_data=True,
     install_requires=[
@@ -32,5 +32,5 @@ setup(
     ],
     python_requires=">=3.8",
     license="MIT",
-    keywords="Korean NLP sentence splitter dialogue system",
+    keywords="Korean NLP sentence splitter dialogue systems",
 )
