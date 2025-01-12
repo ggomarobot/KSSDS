@@ -57,6 +57,9 @@ KSSDS는 한국어 대화 시스템 용 문장 분리에 특화된 딥러닝 기
 ## 2. 설치 및 사용 방법
 
 KSSDS는 GitHub에서 코드를 직접 받아 사용하는 방법과, PyPI를 통해 패키지를 설치하여 사용하는 두 가지 방법을 제공합니다.  
+GitHub 설치는 추가 학습, 평가, 추론 등 모든 기능을 지원하며, PyPI 설치는 간단한 추론 작업에 적합합니다.
+
+
 각각의 설치 및 사용 방법은 아래를 참고하세요.
 
 ### 2.1 GitHub에서 설치하기
@@ -72,6 +75,10 @@ GitHub 저장소에서 코드를 다운로드하면, 추가 학습, 평가, 추�
 2. 의존성을 설치합니다.
    ```bash
    pip install -r requirements.txt    
+   ```
+3. 로컬 환경에 패키지 설치:
+   ```bash
+   pip install -e .   
    ```
 
 #### 사용
@@ -97,7 +104,9 @@ GitHub 저장소에서 코드를 다운로드하면, 추가 학습, 평가, 추�
 
 ### 2.2 PyPI에서 설치하기
 
-PyPI를 통해 KSSDS 패키지를 설치하고 사용할 수 있습니다. 이 경우, 간단한 문장 분리 기능만 제공되며, 추가 학습이나 평가 기능은 지원되지 않습니다.
+PyPI를 통해 KSSDS 패키지를 설치하고 사용할 수 있습니다.  
+PyPI 설치는 문장 분리 (inference) 작업에만 적합합니다.  
+추가 학습이나 평가 기능은 지원되지 않습니다.
 
 #### 설치
 
@@ -114,7 +123,7 @@ pip install KSSDS
 ```python
 from KSSDS import KSSDS
 
-# KSSDS 클래스 초기화
+# 기본 설정으로 KSSDS 모델 호출
 kssds = KSSDS()
 
 # 입력 텍스트
@@ -134,8 +143,38 @@ for idx, sentence in enumerate(split_sentences):
 <span style="color:YellowGreen;">3: 저는 산책을 나갈 예정입니다.</span>
 </pre>
 
-> **Note: PyPI 패키지로 설치한 KSSDS는 추가적인 설정 파일(YAML) 없이 기본 설정값을 사용하여 동작합니다.**
+### 추가 설정 옵션
 
+`KSSDS` 클래스는 다양한 파라미터를 지원하여 사용자 맞춤형 문장 분리를 제공합니다.  
+`config_path`로 YAML 설정 파일을 전달하거나, 초기화 시 직접 파라미터를 지정할 수 있습니다.
+
+#### 주요 파라미터
+
+| 파라미터              | 설명                                                                                     | 기본 값                          |
+|-----------------------|----------------------------------------------------------------------------------------|----------------------------------|
+| `config_path`         | YAML 설정 파일 경로                                                                     | `None` (기본 설정 사용)         |
+| `model_path`          | HuggingFace Hub에서 불러올 모델 경로                                                     | `"ggomarobot/KSSDS"`            |
+| `tokenizer_path`      | HuggingFace Hub에서 불러올 토크나이저 경로                                               | `"ggomarobot/KSSDS"`            |
+| `max_repeats`         | 반복 단어 처리 시 한 문장으로 간주할 최대 반복 단어 수                                   | `60`                            |
+| `detection_threshold` | 반복 단어를 감지하기 위한 최소 반복 길이                                                 | `70`                            |
+
+#### 사용자 정의 예시
+
+1. **YAML 설정 파일로 초기화**:
+
+   ```python
+   kssds = KSSDS(config_path="path/to/inference_config.yaml")
+   ```     
+
+2. **파라미터 직접 전달**:
+    ```python
+    kssds = KSSDS(
+        model_path="ggomarobot/KSSDS_NO_LF", # ablation study 용 모델
+        tokenizer_path="ggomarobot/KSSDS_NO_LF",
+        max_repeats=50,
+        detection_threshold=100
+    )
+    ```
 
 ## 3. 폴더 구조
 ```
@@ -144,7 +183,10 @@ for idx, sentence in enumerate(split_sentences):
 ├── data             # Placeholder for datasets (README inside includes Google Drive link)
 ├── models           # Placeholder for KSSDS models (README inside includes HF Hub links)
 ├── notebooks        # Jupyter notebooks for performance analysis and visualization
-├── src/KSSDS        # Source code for KSSDS package modules
+├── src                      # Source code for the KSSDS package and utility modules
+│   ├── KSSDS                # Core modules for the KSSDS package (e.g., inference, T5 encoder)
+│   ├── utils                # Utility modules for training, evaluation, and data processing
+├── scripts                  # Standalone scripts for training, evaluation, and inference pipelines
 ├── tests            # Unit tests for validating functionality
 │
 ├── env.sh           # Script to set up environment variables

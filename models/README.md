@@ -16,7 +16,26 @@ KSSDS 모델과 관련된 두 가지 HuggingFace Hub 링크를 제공합니다. 
 
 ## KSSDS 모델 사용법
 
-KSSDS는 아래와 같이 Python 코드에서 간단히 불러와 사용할 수 있습니다:
+KSSDS를 체험하거나 활용할 수 있는 방법은 다음 세 가지가 있습니다:
+
+1. **PyPI 설치 (권장)**  
+   PyPI를 통해 KSSDS를 설치하여 간단한 문장 분리 기능을 빠르게 활용할 수 있습니다.  
+   PyPI 설치와 관련된 자세한 내용은 [루트 디렉토리 README의 PyPI 설치 섹션](../README.md#22-pypi에서-설치하기)을 참조하세요.
+
+2. **GitHub 설치**  
+   추가 학습, 평가, 고급 추론 설정 등을 원하시는 개발자분들은 GitHub 저장소를 클론하여 다양한 기능을 활용할 수 있습니다.  
+   GitHub 설치와 관련된 자세한 내용은 [루트 디렉토리 README의 GitHub 설치 섹션](../README.md#21-github에서-설치하기)을 참조하세요.
+
+3. **Hugging Face Hub**  
+   Hugging Face Hub의 네이티브 방식을 통해 KSSDS를 경험할 수 있습니다.  
+   T5 Encoder와 모델 관련 설정 파일을 동적으로 다운로드하여 사용할 수 있으며, [Hugging Face Hub 모델 사용법](https://huggingface.co/ggomarobot/KSSDS)을 참조하세요.
+
+> 각 방식의 장단점은 다음과 같습니다:  
+> - PyPI: 간편한 설치 및 사용, 기본 설정만 지원  
+> - GitHub: 고급 기능 제공, 추가적인 학습 및 평가 가능  
+> - Hugging Face Hub: 특정 환경에서 빠르게 모델 활용 가능   
+
+아래는 PyPI 및 GitHub 방식으로 설치 후 사용하는 방법에 대한 예제입니다:
 
 ### 기본 사용법
 
@@ -37,17 +56,20 @@ for idx, sentence in enumerate(split_sentences):
     print(f"{idx + 1}: {sentence}")
 ```
 
-### 기본 값 및 사용자 설정 가능 파라미터
+## 사용자 설정 가능 파라미터
 
 `KSSDS` 클래스의 `__init__` 메서드는 다음과 같은 파라미터를 제공합니다:
 
 | 파라미터              | 설명                                                                                     | 기본 값                          |
 |-----------------------|----------------------------------------------------------------------------------------|----------------------------------|
+| `config_path`         | YAML 설정 파일 경로                                                                     | `None` (기본 설정 사용)         |
 | `model_path`          | HuggingFace Hub에서 불러올 모델 경로                                                     | `"ggomarobot/KSSDS"`            |
 | `tokenizer_path`      | HuggingFace Hub에서 불러올 토크나이저 경로                                               | `"ggomarobot/KSSDS"`            |
-| `batch_size`          | Inference 시 한 번에 처리할 문장의 개수                                                  | `1`                             |
 | `max_repeats`         | 반복 단어 처리 시 한 문장으로 간주할 최대 반복 단어 수                                   | `60`                             |
 | `detection_threshold` | 반복 단어를 감지하기 위한 최소 반복 길이                                                 | `70`                             |
+
+
+`config_path`로 YAML 설정 파일을 전달하거나, 직접 파라미터를 지정할 수 있습니다.
 
 ## KSSDS_NO_LF 모델 사용법
 
@@ -65,7 +87,7 @@ kssds_nolen = KSSDS(
 
 
 ## 파라미터 변경 예시
-`KSSDS` 클래스의 다양한 파라미터를 사용자 정의할 수 있습니다. 예를 들어, batch_size를 4로 설정하고 반복 단어 감지 기준을 변경하려면 다음과 같이 사용할 수 있습니다:
+`KSSDS` 클래스의 다양한 파라미터를 사용자 정의할 수 있습니다. 예를 들어, 반복 단어 감지 기준을 변경하려면 다음과 같이 사용할 수 있습니다:
 
 ```python
 from KSSDS import KSSDS
