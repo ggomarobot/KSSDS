@@ -1,5 +1,5 @@
 GPUtil==1.4.0
-numpy==2.2.1
+numpy>=1.19.5,<2.0
 PyYAML==6.0.2
 scikit_learn==1.6.0
 torch==2.5.1
