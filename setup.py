@@ -5,7 +5,7 @@ setup(
     version="1.0.1",
     author="Gun Yang",
     author_email="ggomarobot@gmail.com",
-    description="Korean Sentence Splitter for Dialogue System",
+    description="Korean Sentence Splitter for Dialogue Systems",
     long_description=open("README_PYPI.md").read(),
     long_description_content_type="text/markdown",
     url="https://github.com/ggomarobot/KSSDS",

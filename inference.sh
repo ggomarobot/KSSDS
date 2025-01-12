@@ -1,4 +1,7 @@
 #!/bin/bash
 
+# Source environment variables
+. ./env.sh
+
 # Run inference
-python ./src/KSSDS/inference.py
+python scripts/inference.py

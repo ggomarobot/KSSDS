@@ -1,4 +1,7 @@
 #!/bin/bash
 
+# Source environment variables
+. ./env.sh
+
 # Run evaluate
-python ./src/KSSDS/evaluate.py
+python scripts/evaluate.py

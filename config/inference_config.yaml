@@ -8,8 +8,7 @@ input_sequence: "" # Input text for sentence splitting (leave blank if using inp
 output_tsv: "./KSSDS_HF_HUB_test.tsv"  # Output TSV file path
 output_print: true # Whether split sentence outputs will be printed out on terminal
 
-batch_size: 1
-inference_mode: true
+max_length: 512
 
 # KSSDS 를 사용할 tsv 파일의 Row 이름들
 input_columns:

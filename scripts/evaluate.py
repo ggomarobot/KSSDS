@@ -1,11 +1,14 @@
 import os
 import yaml
 from transformers import AutoTokenizer, TrainingArguments
-from .dataloader import CustomDataLoader, custom_collate_fn
-from .dataset import RawCustomDataset
-from .trainer import CustomTrainer
-from .T5_encoder import T5ForTokenClassification
-from .util import compute_metrics, CombinedTensorboardCallback
+# src/KSSDS에서 필요한 모듈 가져오기
+from KSSDS.T5_encoder import T5ForTokenClassification
+
+# src/utils에서 필요한 모듈 가져오기
+from utils.dataloader import CustomDataLoader, custom_collate_fn
+from utils.dataset import RawCustomDataset
+from utils.trainer import CustomTrainer
+from utils.util import compute_metrics, CombinedTensorboardCallback
 
 def initialize_trainer(model, tokenizer, config, eval_dataset=None):
     """

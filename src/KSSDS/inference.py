@@ -4,19 +4,15 @@ import csv
 import transformers
 from transformers import AutoTokenizer
 from .T5_encoder import T5ForTokenClassification
-from .dataloader import CustomDataLoader, custom_collate_fn
-from .dataset import RawCustomDataset
 
 
 class KSSDS:
-    def __init__(self, config_path=None, model_path=None, batch_size=1, tokenizer_path=None, max_repeats=60, detection_threshold=70):
+    def __init__(self, config_path=None, model_path=None, tokenizer_path=None, max_repeats=60, detection_threshold=70):
+        transformers.logging.set_verbosity_error()
         if config_path:
-            # Load configuration from YAML file
             with open(config_path, 'r') as file:
                 self.config = yaml.safe_load(file)
         else:
-            transformers.logging.set_verbosity_error()
-            # Use default or user-provided settings
             self.config = {
                 "model_path": model_path or "ggomarobot/KSSDS",
                 "tokenizer_path": tokenizer_path or "ggomarobot/KSSDS",
@@ -24,84 +20,43 @@ class KSSDS:
                     "max_repeats": max_repeats,
                     "detection_threshold": detection_threshold
                 },
-                "batch_size": batch_size or 1,  # Default batch size
-                "inference_mode": True
+                "max_length": 512,
             }
 
-        # Load model and tokenizer
-        self.model_dir = self.config["model_path"]
-        self.model, self.device = self.load_model()
+        self.model, self.device = self.load_model(self.config["model_path"])
         self.tokenizer = AutoTokenizer.from_pretrained(self.config["tokenizer_path"])
+        self.max_length = self.config["max_length"]
         self.max_repeats = self.config["repetition_detection"]["max_repeats"]
         self.detection_threshold = self.config["repetition_detection"]["detection_threshold"]
 
-    def load_model(self):
-        model = T5ForTokenClassification.from_pretrained(self.model_dir)
+    def load_model(self, model_path):
+        model = T5ForTokenClassification.from_pretrained(model_path)
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         model.to(device)
         return model, device
 
-    def prepare_input_data(self, text):
-        dataset = RawCustomDataset(input_data=text, is_file=False, config=self.config)
-        dataloader = CustomDataLoader(dataset, batch_size=self.config["batch_size"],
-                                      collate_fn=custom_collate_fn, config=self.config)
-        return dataloader
+    def split_into_chunks(self, tokens):
+        return [tokens[i:i + self.max_length] for i in range(0, len(tokens), self.max_length)]
 
-    def trim_predictions(self, input_ids, predictions, attention_masks):
-        trimmed_inputs = []
-        trimmed_predictions = []
-        
-        for inp_id, pred, mask in zip(input_ids, predictions, attention_masks):
-            if len(pred) != len(mask):
-                print(f"Warning: Length mismatch between pred and mask: {len(pred)} vs {len(mask)}")
-                min_length = min(len(pred), len(mask))
-                pred = pred[:min_length]
-                mask = mask[:min_length]
-                inp_id = inp_id[:min_length]
+    def process_text(self, text):
+        tokens = self.tokenizer.encode(text, add_special_tokens=False)
+        chunks = self.split_into_chunks(tokens)
+        return chunks
 
-            trimmed_pred = pred[mask == 1]
-            trimmed_inp_id = inp_id[mask == 1]
-
-            trimmed_predictions.append(trimmed_pred)
-            trimmed_inputs.append(trimmed_inp_id)
-
-        return trimmed_inputs, trimmed_predictions
-
-    def segment_predictions(self, inp, pred):
-        segments = []
-        current_segment = []
-        inp = inp[0].cpu().numpy()
-        pred = pred[0]
-
-        for token, label in zip(inp, pred):
-            if label == 1:
-                if current_segment:
-                    current_segment.append(token)
-                    segments.append(current_segment)
-                    current_segment = []
-                else:
-                    segments.append([token])
-            else:
-                current_segment.append(token)
-
-        if current_segment:
-            segments.append(current_segment)
-
-        return segments
-    
-    def handle_repetitions(self, decoded_preds, max_repeats=60, detection_threshold=70):
-        words = decoded_preds.split()
-        if len(words) <= detection_threshold:
-            return [decoded_preds]
+    def handle_repetitions(self, text):
+        words = text.split()
+        if len(words) <= self.detection_threshold:
+            return [text]
 
         result_sentences = []
-        current_sentence = []
         current_repetition = []
+        current_sentence = []
 
         def flush_repetition():
-            if len(current_repetition) > max_repeats:
-                for j in range(0, len(current_repetition), max_repeats):
-                    result_sentences.append(" ".join(current_repetition[j:j + max_repeats]))
+            if len(current_repetition) > self.max_repeats:
+                result_sentences.extend(
+                    [" ".join(current_repetition[i:i + self.max_repeats]) for i in range(0, len(current_repetition), self.max_repeats)]
+                )
             else:
                 current_sentence.extend(current_repetition)
 
@@ -122,87 +77,93 @@ class KSSDS:
 
         if current_repetition:
             flush_repetition()
-
         if current_sentence:
             result_sentences.append(" ".join(current_sentence))
 
         return result_sentences
 
-    
-    def process_predictions(self, input_ids, predictions, attention_masks):
+    def segment_predictions(self, inp, pred):
+        segments = []
+        current_segment = []
+        inp = inp[0]
+        pred = pred[0]
+
+        for token, label in zip(inp, pred):
+            if label == 1:  # End of a sentence
+                if current_segment:
+                    current_segment.append(token)
+                    segments.append(current_segment)
+                    current_segment = []
+                else:
+                    segments.append([token])
+            else:  # Continuation of a sentence
+                current_segment.append(token)
+
+        if current_segment:  # Add any remaining tokens as a final segment
+            segments.append(current_segment)
+
+        return segments
+
+
+    def run_inference(self, input_sequence):
+        chunks = self.process_text(input_sequence)
         results = []
-        carry_over_tokens = []  # Tokens to carry over to the next batch
+        carry_over_tokens = []  # Tokens to carry over to the next chunk
         carry_over_labels = []  # Corresponding labels for carry-over tokens
 
-        for inp_id, pred, mask in zip(input_ids, predictions, attention_masks):
-            # Convert inputs to tensors if they are not already
-            inp_id = torch.tensor(inp_id, device=self.device) if not isinstance(inp_id, torch.Tensor) else inp_id
-            pred = torch.tensor(pred, device=self.device) if not isinstance(pred, torch.Tensor) else pred
-            mask = torch.tensor(mask, device=self.device) if not isinstance(mask, torch.Tensor) else mask
+        self.model.eval()
+        with torch.inference_mode():
+            for chunk in chunks:
+                # Prepare inputs
+                input_ids = torch.tensor([chunk]).to(self.device)
+                attention_mask = torch.ones_like(input_ids).to(self.device)
 
-            # If there's a carry-over, prepend it to the current batch
-            if carry_over_tokens:
-                carry_over_tokens_tensor = torch.tensor(carry_over_tokens, device=self.device)
-                carry_over_labels_tensor = torch.tensor(carry_over_labels, device=self.device)
-                inp_id = torch.cat((carry_over_tokens_tensor, inp_id))
-                pred = torch.cat((carry_over_labels_tensor, pred))
-                mask = torch.cat((torch.ones(len(carry_over_tokens), device=self.device), mask))
-                carry_over_tokens = []
-                carry_over_labels = []
+                # Model inference
+                outputs = self.model(input_ids=input_ids, attention_mask=attention_mask)
+                predictions = torch.argmax(outputs.logits, dim=-1).squeeze().tolist()
+                # Ensure predictions is a list, even for single-token inputs
+                if isinstance(predictions, int):
+                    predictions = [predictions]
+                # Handle carry-over tokens from previous chunk
+                if carry_over_tokens:
+                    chunk = carry_over_tokens + chunk
+                    predictions = carry_over_labels + predictions
+                    carry_over_tokens = []
+                    carry_over_labels = []
+                # Segment predictions into sentences
+                segmented_predictions = self.segment_predictions([chunk], [predictions])
 
-            # Process the current batch
-            trimmed_inp, trimmed_pred = self.trim_predictions([inp_id], [pred], [mask])
-            segmented_preds = self.segment_predictions(trimmed_inp, trimmed_pred)
+                # Process each segment
+                for i, segment in enumerate(segmented_predictions):
+                    if i == len(segmented_predictions) - 1 and segment[-1] != 1:  # Last segment does not end in a sentence
+                        carry_over_tokens = segment  # Carry over this segment
+                        carry_over_labels = [0] * len(segment)  # Assign label 0 for carry-over tokens
+                    else:
+                        decoded_sentence = self.tokenizer.decode(segment, skip_special_tokens=False, clean_up_tokenization_spaces=False).strip()
+                        # Handle repetitions
+                        decoded_sentence = self.handle_repetitions(decoded_sentence)
+                        if decoded_sentence:
+                            results.extend(decoded_sentence)
 
-            # Handle segments and check for carry-over
-            for i, seg in enumerate(segmented_preds):
-                if i == len(segmented_preds) - 1 and seg[-1] != 1:  # Last segment, and it ends in 0
-                    carry_over_tokens = seg  # Carry over this segment
-                    carry_over_labels = [0] * len(seg)  # Assign Label: 0 to all carried-over tokens
-                else:
-                    # Decode and add non-empty results
-                    decoded_preds = self.tokenizer.decode(seg, skip_special_tokens=False, clean_up_tokenization_spaces=False).strip()
-                    # Handle repetitions
-                    decoded_preds = self.handle_repetitions(decoded_preds, self.max_repeats, self.detection_threshold)
-                    if decoded_preds:
-                        results.extend(decoded_preds)
-
-        # Handle any remaining carry-over at the end of all batches
+        # Handle any remaining carry-over tokens
         if carry_over_tokens:
-            decoded_preds = self.tokenizer.decode(carry_over_tokens, skip_special_tokens=False, clean_up_tokenization_spaces=False).strip()
-            decoded_preds = self.handle_repetitions(decoded_preds, self.max_repeats, self.detection_threshold)
-            if decoded_preds:
-                results.extend(decoded_preds)
+            decoded_remainder = self.tokenizer.decode(carry_over_tokens, skip_special_tokens=False, clean_up_tokenization_spaces=False).strip()
+            decoded_remainder = self.handle_repetitions(decoded_remainder)
+            if decoded_remainder:
+                results.extend(decoded_remainder)
 
         return results
-    
-    def run_inference(self, dataloader):
-        self.model.eval()
-        all_input_ids = []
-        all_predictions = []
-        all_attention_masks = []
 
-        for batch in dataloader:
-            input_ids = batch['input_ids'].to(self.device)
-            attention_mask = batch.get('attention_mask', torch.ones_like(input_ids)).to(self.device)
-
-            with torch.inference_mode():
-                outputs = self.model(input_ids=input_ids, attention_mask=attention_mask)
-
-            logits = outputs.logits
-            predictions = torch.argmax(logits, dim=-1).cpu().numpy()
-            attention_masks = attention_mask.cpu().numpy()
-
-            trimmed_tokens, trimmed_predictions = self.trim_predictions(input_ids, predictions, attention_masks)
-            all_input_ids.extend(trimmed_tokens)
-            all_predictions.extend(trimmed_predictions)
-            all_attention_masks.extend(attention_masks)
-
-        return self.process_predictions(all_input_ids, all_predictions, all_attention_masks)
-
-    def sentence_splitter(self, input_sequence):
-        dataloader = self.prepare_input_data(input_sequence)
-        return self.run_inference(dataloader)
+    # Wrapper function for KSSDS package; performs sentence splitting
+    def split_sentences(self, input_sequence):
+        """
+        Split a single string input into sentences using the model.
+        Args:
+            input_sequence (str): The input text to be split.
+        Returns:
+            List[str]: A list of split sentences.
+        """
+        return self.run_inference(input_sequence)
 
     def process_tsv(self, input_tsv, output_tsv=None, output_print=False):
         # Get input column names from the configuration
@@ -223,7 +184,7 @@ class KSSDS:
                 transcription = row.get(transcription_column, "").strip()  # Get transcription
 
                 # Split sentences using the KSSDS model
-                split_sentences = self.sentence_splitter(transcription)
+                split_sentences = self.run_inference(transcription)
 
                 for idx, sentence in enumerate(split_sentences):
                     results.append((file_name, idx, sentence.strip()))
@@ -241,8 +202,8 @@ class KSSDS:
                     print(f"{file_name}\t{idx}\t{sentence}")
 
     def process_input_sequence(self, input_sequence, output_tsv=None, output_print=False):
-        split_sentences = self.sentence_splitter(input_sequence)
-        
+        split_sentences = self.run_inference(input_sequence)
+
         if output_tsv:
             with open(output_tsv, 'w', encoding='utf-8', newline='') as outfile:
                 writer = csv.writer(outfile, delimiter='\t')
@@ -253,41 +214,3 @@ class KSSDS:
         if output_print:
             for idx, sentence in enumerate(split_sentences):
                 print(f"[{idx}]: {sentence.strip()}")
-
-    # function for KSSDS package; performs same task as sentence_splitter()            
-    def split_sentences(self, input_sequence):
-        """
-        Split a single string input into sentences using the model.
-        Args:
-            input_sequence (str): The input text to be split.
-        Returns:
-            List[str]: A list of split sentences.
-        """
-        dataloader = self.prepare_input_data(input_sequence)
-        return self.run_inference(dataloader)                
-
-if __name__ == "__main__":
-    transformers.logging.set_verbosity_error()
-    config_path = "./config/inference_config.yaml"
-
-    # Initialize KSSDS
-    kssds = KSSDS(config_path=config_path)
-
-    # Read inputs from config
-    input_tsv = kssds.config.get("input_tsv")
-    input_sequence = kssds.config.get("input_sequence")
-    output_tsv = kssds.config["output_tsv"]
-    output_print = kssds.config.get("output_print", False)
-    
-    # Ensure valid input/output specification
-    if (input_tsv and input_sequence) or (not input_tsv and not input_sequence):
-        raise ValueError("You must specify either 'input_tsv' or input_sequence' in the configuration file, but not both.")
-    # either an 'output_tsv' file path must be specified in the config file, or set output_print to True  
-    if not output_tsv and not output_print:
-        raise ValueError("You must specify either 'output_tsv' or enable 'output_print'.")       
-
-    # Process inputs based on input type
-    if input_tsv:
-        kssds.process_tsv(input_tsv, output_tsv, output_print)
-    elif input_sequence:
-        kssds.process_input_sequence(input_sequence, output_tsv, output_print)

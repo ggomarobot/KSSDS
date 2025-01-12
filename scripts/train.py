@@ -1,10 +1,10 @@
 import os
 from transformers import AutoTokenizer, TrainingArguments, AutoModelForSeq2SeqLM, EarlyStoppingCallback
-from .dataset import RawCustomDataset
-from .dataloader import custom_collate_fn
-from .T5_encoder import T5ForTokenClassification
-from .util import initialize_classifier, compute_metrics, CombinedTensorboardCallback
-from .trainer import CustomTrainer
+from utils.dataset import RawCustomDataset
+from utils.dataloader import custom_collate_fn
+from KSSDS.T5_encoder import T5ForTokenClassification
+from utils.util import initialize_classifier, compute_metrics, CombinedTensorboardCallback
+from utils.trainer import CustomTrainer
 
 def train_model(training_dataset_files, validation_dataset_files, config):
     """
