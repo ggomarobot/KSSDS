@@ -7,3 +7,4 @@ MANIFEST.in
 README_prev.md
 tests/TC.tsv
 tests/Validation.tsv
+hf_hub_inference.py

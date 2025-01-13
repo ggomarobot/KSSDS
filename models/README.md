@@ -10,7 +10,7 @@ KSSDS 모델과 관련된 두 가지 HuggingFace Hub 링크를 제공합니다. 
 
 - [**KSSDS_NO_LF**](https://huggingface.co/ggomarobot/KSSDS_NO_LF)  
   - Length Filter를 적용하지 않은 ablation study 용 모델입니다.  
-  - 학습 데이터 필터링을 생략하여, 긴 텍스트에서 상대적으로 덜 세부적인 문장 분리를 수행합니다.  
+  - 학습 데이터 필터링을 생략하여, 긴 텍스트에서 상대적으로 덜 정밀한 문장 분리를 수행합니다.  
   - 연구 및 비교 목적 외에는 실제 사용에 적합하지 않을 수 있습니다.
 
 
