@@ -3,7 +3,7 @@ model:
   tokenizer_path: "ggomarobot/KSSDS"
 
 data:
-  test_dataset_folder: "/workspace/model/sentence_splitter/NLP_Project/data/tc/Reconstructed TC Text"
+  test_dataset_folder: "/workspace/model/sentence_splitter/NLP_Project/data/tc/Reconstructed TC ChatGPT"
   src_file_extension: ".tsv"
 
 training:

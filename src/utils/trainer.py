@@ -1,7 +1,7 @@
 import numpy as np
 import torch
 from transformers import Trainer, EvalPrediction
-from dataloader import CustomDataLoader
+from .dataloader import CustomDataLoader
 
 class CustomTrainer(Trainer):
     def __init__(self, *args, custom_config=None, **kwargs):
