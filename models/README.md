@@ -66,8 +66,8 @@ for idx, sentence in enumerate(split_sentences):
 | `model_path`          | HuggingFace Hub에서 불러올 모델 경로                                                     | `"ggomarobot/KSSDS"`            |
 | `tokenizer_path`      | HuggingFace Hub에서 불러올 토크나이저 경로                                               | `"ggomarobot/KSSDS"`            |
 | `max_repeats`         | 반복 단어 처리 시 한 문장으로 간주할 최대 반복 단어 수                                   | `60`                             |
-| `detection_threshold` | 반복 단어를 감지하기 위한 최소 반복 길이                                                 | `70`                             |
-
+| `detection_threshold` | 반복 단어를 감지하기 위한 최소 단어 수                                                | `70`                             |
+| `max_phrase_length` | 반복 구절을 감지하기 위한 구절 내 최대 단어 수                                               | `2`                            |
 
 `config_path`로 YAML 설정 파일을 전달하거나, 직접 파라미터를 지정할 수 있습니다.
 
@@ -95,7 +95,7 @@ from KSSDS import KSSDS
 # 사용자 정의 파라미터로 KSSDS 초기화
 kssds_custom = KSSDS(
     max_repeats=50,  # 반복 단어를 50개 단위로 분리
-    detection_threshold=100  # 최소 반복 길이를 100으로 설정
+    detection_threshold=100  # 반복 감지를 위한 텍스트의 최소 단어 수를 100으로 설정
 )
 ```
 

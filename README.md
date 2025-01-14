@@ -38,8 +38,8 @@ KSSDS는 한국어 대화 시스템 용 문장 분리에 특화된 딥러닝 기
     하지만 이러한 방식은 구두점이 없는 텍스트나 구두점이 문장의 끝이 아닌 경우에는 한계를 보일 수 있습니다.  
     KSSDS는 딥러닝 모델을 기반으로 이러한 의존도를 줄이고, 구두점 유무와 관계없이 보다 자연스러운 문장 분리가 가능합니다.
 
-2. **반복되는 단어 처리**  
-    특정 단어나 구문이 반복적으로 나타날 경우 규칙 기반 후처리를 적용하여 이를 감지하고 적절히 분리하는 기능을 제공합니다. OpenAI Whisper와 같은 STT 모델은 충분한 정보를 얻지 못할 경우, 이전에 생성된 단어나 구문을 반복적으로 출력하는 경향이 있습니다[^1]. Whisper는 텍스트 생성 시 마지막 224개의 토큰만을 참고하여 다음 단어를 예측하기 때문에[^2], 충분한 정보가 없는 경우 동일한 단어가 최대 223번 반복되는 현상이 자주 관찰됩니다.
+2. **반복되는 단어 및 구문 처리**  
+    특정 단어나 구문이 반복적으로 나타날 경우 규칙 기반 후처리를 적용하여 이를 감지하고 적절히 분리하는 기능을 제공합니다. OpenAI Whisper와 같은 STT 모델은 충분한 정보를 얻지 못할 경우, 이전에 생성된 단어나 구문을 반복적으로 출력하는 경향이 있습니다[^1]. Whisper는 텍스트 생성 시 마지막 224개의 토큰만을 참고하여 다음 단어를 예측하기 때문에[^2], 충분한 정보가 없는 경우 동일한 단어나 구문이 최대 223번 반복되는 현상이 자주 관찰됩니다.
 
     이러한 반복 구문은 기존의 규칙 또는 통계 기반 문장 분리기에서는 사전적 의미의 "문장"으로 간주되지 않아 처리가 어렵습니다.
     그러나 KSSDS는 문장 분리 후 추가적인 후처리 규칙을 통해 비정상적으로 긴 반복 구문을 감지하고, 이를 적절히 분리함으로써 후속 NLP 모델의 입력 길이 제한을 초과하지 않도록 최적화된 결과를 제공합니다.
@@ -157,7 +157,8 @@ for idx, sentence in enumerate(split_sentences):
 | `model_path`          | HuggingFace Hub에서 불러올 모델 경로                                                     | `"ggomarobot/KSSDS"`            |
 | `tokenizer_path`      | HuggingFace Hub에서 불러올 토크나이저 경로                                               | `"ggomarobot/KSSDS"`            |
 | `max_repeats`         | 반복 단어 처리 시 한 문장으로 간주할 최대 반복 단어 수                                   | `60`                            |
-| `detection_threshold` | 반복 단어를 감지하기 위한 최소 반복 길이                                                 | `70`                            |
+| `detection_threshold` | 반복 단어를 감지하기 위한 최소 단어 수                                                 | `70`                            |
+| `max_phrase_length` | 반복 구절을 감지하기 위한 구절 내 최대 단어 수                                               | `2`                            |
 
 #### 사용자 정의 예시
 
@@ -186,7 +187,7 @@ for idx, sentence in enumerate(split_sentences):
 ├── notebooks        # Jupyter notebooks for performance analysis and visualization
 ├── src              # Source code for the KSSDS package and utility modules
 │   ├── KSSDS        # Core modules for the KSSDS package (e.g., inference, T5 encoder)
-│   ├── utils        # Utility modules for training, evaluation, and data processing
+│   └── utils        # Utility modules for training, evaluation, and data processing
 ├── scripts          # Standalone scripts for training, evaluation, and inference pipelines
 ├── tests            # Unit tests for validating functionality
 │

@@ -19,5 +19,10 @@ input_columns:
 repetition_detection:
   max_repeats: 60 # 한 문장으로 인정할 최대 반복 수
                   # max_repeats: 60 일 시, 같은 단어가 75자 반복되면 60자 / 15자 두 문장으로 분리됨
-  detection_threshold: 70 # 단어 반복을 detect 하는 최소 반복 길이
-                          # detection_threshold: 70 일 시, 70번 이하 반복은 반복으로 간주되지 않음
+  detection_threshold: 70 # 반복 감지를 위한 최소 단어 수
+                          # detection_threshold: 70 일 시, 70개 단어 이하 텍스트는 반복이 있더라도 감지하지 않음
+  max_phrase_length: 2 # 최대 반복 구절 길이
+                       # max_phrase_length: 2 일 시,
+                       # 한 단어 반복 "아 아 아 아 아 아 ..."
+                       # 두 단어 반복 "음 그러면 음 그러면 음 그러면 음 그러면 ..."
+                       # 까지만 감지하고 이를 초과하는 단어 수 반복 구절은 감지하지 않음                          

@@ -7,7 +7,7 @@ from .T5_encoder import T5ForTokenClassification
 
 
 class KSSDS:
-    def __init__(self, config_path=None, model_path=None, tokenizer_path=None, max_repeats=60, detection_threshold=70):
+    def __init__(self, config_path=None, model_path=None, tokenizer_path=None, max_repeats=60, detection_threshold=70, max_phrase_length=2):
         transformers.logging.set_verbosity_error()
         if config_path:
             with open(config_path, 'r') as file:
@@ -18,7 +18,8 @@ class KSSDS:
                 "tokenizer_path": tokenizer_path or "ggomarobot/KSSDS",
                 "repetition_detection": {
                     "max_repeats": max_repeats,
-                    "detection_threshold": detection_threshold
+                    "detection_threshold": detection_threshold,
+                    "max_phrase_length": max_phrase_length
                 },
                 "max_length": 512,
             }
@@ -28,6 +29,7 @@ class KSSDS:
         self.max_length = self.config["max_length"]
         self.max_repeats = self.config["repetition_detection"]["max_repeats"]
         self.detection_threshold = self.config["repetition_detection"]["detection_threshold"]
+        self.max_phrase_length = self.config["repetition_detection"]["max_phrase_length"]
 
     def load_model(self, model_path):
         model = T5ForTokenClassification.from_pretrained(model_path)
@@ -42,7 +44,7 @@ class KSSDS:
         tokens = self.tokenizer.encode(text, add_special_tokens=False)
         chunks = self.split_into_chunks(tokens)
         return chunks
-
+    '''
     def handle_repetitions(self, text):
         words = text.split()
         if len(words) <= self.detection_threshold:
@@ -81,7 +83,77 @@ class KSSDS:
             result_sentences.append(" ".join(current_sentence))
 
         return result_sentences
+    '''
+    def handle_repetitions(self, text):
+        """
+        Handles single-word and phrase repetitions in the text, ensuring proper order and separation.
 
+        Args:
+            text (str): The input text to process.
+
+        Returns:
+            List[str]: The processed text split into sentences.
+        """
+        words = text.split()
+        if len(words) <= self.detection_threshold:
+            return [text]
+
+        result_sentences = []
+        current_repetition = []
+        current_sentence = []
+
+        def flush_sentence():
+            """Flush the current sentence into result_sentences."""
+            if current_sentence:
+                result_sentences.append(" ".join(current_sentence))
+                current_sentence.clear()
+
+        def flush_repetition():
+            """Flush the current repetition into result_sentences."""
+            for i in range(0, len(current_repetition), phrase_length * self.max_repeats):
+                chunk = current_repetition[i:i + phrase_length * self.max_repeats]
+                result_sentences.append(" ".join(chunk))
+            current_repetition.clear()
+
+        def find_repeating_phrase(start_idx):
+            """Find the smallest repeating phrase starting at the given index."""
+            for phrase_length in range(1, self.max_phrase_length + 1):
+                phrase = words[start_idx:start_idx + phrase_length]
+                next_idx = start_idx + phrase_length
+                if next_idx + phrase_length <= len(words) and words[next_idx:next_idx + phrase_length] == phrase:
+                    return phrase
+            return None
+
+        i = 0
+        while i < len(words):
+            repeating_phrase = find_repeating_phrase(i)
+            if repeating_phrase:
+                # Flush any ongoing sentence before handling repetition
+                flush_sentence()
+
+                # Accumulate repeating phrases
+                phrase_length = len(repeating_phrase)
+                while i + phrase_length <= len(words) and words[i:i + phrase_length] == repeating_phrase:
+                    current_repetition.extend(repeating_phrase)
+                    i += phrase_length
+
+                # Flush accumulated repetition if it reaches the threshold
+                if len(current_repetition) >= phrase_length * self.max_repeats:
+                    flush_repetition()
+            else:
+                # Add non-repeating words to the current sentence
+                if current_repetition:
+                    # Flush repetition before starting a new sentence
+                    flush_repetition()
+                current_sentence.append(words[i])
+                i += 1
+
+        # Flush any remaining tokens
+        flush_sentence()
+        flush_repetition()
+
+        return result_sentences
+        
     def segment_predictions(self, inp, pred):
         segments = []
         current_segment = []
