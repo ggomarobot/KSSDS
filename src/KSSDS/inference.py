@@ -110,8 +110,8 @@ class KSSDS:
 
         def flush_repetition():
             """Flush the current repetition into result_sentences."""
-            for i in range(0, len(current_repetition), phrase_length * self.max_repeats):
-                chunk = current_repetition[i:i + phrase_length * self.max_repeats]
+            for i in range(0, len(current_repetition), self.phrase_length * self.max_repeats):
+                chunk = current_repetition[i:i + self.phrase_length * self.max_repeats]
                 result_sentences.append(" ".join(chunk))
             current_repetition.clear()
 
@@ -121,10 +121,12 @@ class KSSDS:
                 phrase = words[start_idx:start_idx + phrase_length]
                 next_idx = start_idx + phrase_length
                 if next_idx + phrase_length <= len(words) and words[next_idx:next_idx + phrase_length] == phrase:
+                    self.phrase_length = phrase_length  # Update `self.phrase_length` dynamically
                     return phrase
             return None
 
         i = 0
+        self.phrase_length = 1  # Initialize with a default value
         while i < len(words):
             repeating_phrase = find_repeating_phrase(i)
             if repeating_phrase:
@@ -132,18 +134,16 @@ class KSSDS:
                 flush_sentence()
 
                 # Accumulate repeating phrases
-                phrase_length = len(repeating_phrase)
-                while i + phrase_length <= len(words) and words[i:i + phrase_length] == repeating_phrase:
+                while i + self.phrase_length <= len(words) and words[i:i + self.phrase_length] == repeating_phrase:
                     current_repetition.extend(repeating_phrase)
-                    i += phrase_length
+                    i += self.phrase_length
 
                 # Flush accumulated repetition if it reaches the threshold
-                if len(current_repetition) >= phrase_length * self.max_repeats:
+                if len(current_repetition) >= self.phrase_length * self.max_repeats:
                     flush_repetition()
             else:
                 # Add non-repeating words to the current sentence
                 if current_repetition:
-                    # Flush repetition before starting a new sentence
                     flush_repetition()
                 current_sentence.append(words[i])
                 i += 1
@@ -153,6 +153,7 @@ class KSSDS:
         flush_repetition()
 
         return result_sentences
+
         
     def segment_predictions(self, inp, pred):
         segments = []
