@@ -5,10 +5,7 @@ data:
   src_file_extension: ".tsv"
 
 model:
-  # model_path: "lcw99/t5-base-korean-text-summary" # 첫 훈련 시
   model_path: "ggomarobot/KSSDS" # length filter best model 추가 훈련 시
-  num_labels: 2 # 첫 훈련 시에 lcw99/t5-base-korean-text-summary 모델을 KSSDS로 fine-tuning 할 때만 사용
-                # (KSSDS는 종결 어미인지 아닌지 2개의 레이블만 사용 - 종결 어미 아님: 0, 종결 어미: 1)
 
 training:
   output_dir: "./results"

@@ -11,26 +11,11 @@ def train_model(training_dataset_files, validation_dataset_files, config):
     Trains the model using the provided training and validation datasets and configuration.
     """
     model_path = config["model"]["model_path"]
-    num_labels = config["model"]["num_labels"]
-    '''
-    # 첫 훈련 시 코드 #
-    ###########################################################################
-    # 기존 토크나이저
-    tokenizer = AutoTokenizer.from_pretrained(model_path)
-    # 우리 모델
-    model = T5ForTokenClassification.from_pretrained(model_path, num_labels=num_labels) 
-    # classifier.weight / classifier.bias initialization
-    initialize_classifier(model.classifier)    
-    ###########################################################################
-    '''
-    #'''
-    # 첫 훈련 이후 코드 #
-    ###########################################################################
+    
     # Load tokenizer and model
     tokenizer = AutoTokenizer.from_pretrained(model_path)
     model = T5ForTokenClassification.from_pretrained(model_path)
-    ###########################################################################
-    #'''
+    
     # Create dataset objects
     train_dataset = RawCustomDataset(input_data=training_dataset_files, config=config)
     eval_dataset = RawCustomDataset(input_data=validation_dataset_files, config=config)
