@@ -156,24 +156,19 @@ class KSSDS:
 
         
     def segment_predictions(self, inp, pred):
-        """
-        Segments tokens into sentences based on prediction labels.
-
-        Args:
-            inp (List[int]): List of token IDs.
-            pred (List[int]): Corresponding prediction labels.
-
-        Returns:
-            List[List[int]]: List of segmented sentences (each a list of token IDs).
-        """
         segments = []
         current_segment = []
+        inp = inp[0]
+        pred = pred[0]
 
         for token, label in zip(inp, pred):
             if label == 1:  # End of a sentence
-                current_segment.append(token)
-                segments.append(current_segment)
-                current_segment = []
+                if current_segment:
+                    current_segment.append(token)
+                    segments.append(current_segment)
+                    current_segment = []
+                else:
+                    segments.append([token])
             else:  # Continuation of a sentence
                 current_segment.append(token)
 
@@ -184,56 +179,41 @@ class KSSDS:
 
 
     def run_inference(self, input_sequence):
-        """
-        Processes input text through the model and splits it into sentences.
-
-        Args:
-            input_sequence (str): Input text to process.
-
-        Returns:
-            List[str]: List of split sentences.
-        """
         chunks = self.process_text(input_sequence)
         results = []
-        carry_over_tokens = []
-        carry_over_labels = []
+        carry_over_tokens = []  # Tokens to carry over to the next chunk
+        carry_over_labels = []  # Corresponding labels for carry-over tokens
 
         self.model.eval()
         with torch.inference_mode():
             for chunk in chunks:
+                # Prepare inputs
                 input_ids = torch.tensor([chunk]).to(self.device)
                 attention_mask = torch.ones_like(input_ids).to(self.device)
 
                 # Model inference
                 outputs = self.model(input_ids=input_ids, attention_mask=attention_mask)
                 predictions = torch.argmax(outputs.logits, dim=-1).squeeze().tolist()
-
-                if isinstance(predictions, int):  # Single-token edge case
+                # Ensure predictions is a list, even for single-token inputs
+                if isinstance(predictions, int):
                     predictions = [predictions]
-
-                if carry_over_tokens:  # Handle carry-over from previous chunk
+                # Handle carry-over tokens from previous chunk
+                if carry_over_tokens:
                     chunk = carry_over_tokens + chunk
                     predictions = carry_over_labels + predictions
                     carry_over_tokens = []
                     carry_over_labels = []
-
-                # Segment predictions
-                segmented_predictions = self.segment_predictions(chunk, predictions)
+                # Segment predictions into sentences
+                segmented_predictions = self.segment_predictions([chunk], [predictions])
 
                 # Process each segment
                 for i, segment in enumerate(segmented_predictions):
-                    if i == len(segmented_predictions) - 1:  # Last segment
-                        last_label = predictions[-1]  # Get the last label directly
-                        if last_label != 1:  # Last segment does not end in a sentence
-                            carry_over_tokens = segment
-                            carry_over_labels = [0] * len(segment)
-                        else:
-                            decoded_sentence = self.tokenizer.decode(segment, skip_special_tokens=False, clean_up_tokenization_spaces=False).strip()
-                            decoded_sentence = self.handle_repetitions(decoded_sentence)
-                            if decoded_sentence:
-                                results.extend(decoded_sentence)
-                    else:  # Process non-final segments
+                    if i == len(segmented_predictions) - 1 and segment[-1] != 1:  # Last segment does not end in a sentence
+                        carry_over_tokens = segment  # Carry over this segment
+                        carry_over_labels = [0] * len(segment)  # Assign label 0 for carry-over tokens
+                    else:
                         decoded_sentence = self.tokenizer.decode(segment, skip_special_tokens=False, clean_up_tokenization_spaces=False).strip()
+                        # Handle repetitions
                         decoded_sentence = self.handle_repetitions(decoded_sentence)
                         if decoded_sentence:
                             results.extend(decoded_sentence)
