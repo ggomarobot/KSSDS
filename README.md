@@ -59,7 +59,7 @@ KSSDS는 한국어 대화 시스템 용 문장 분리에 특화된 딥러닝 기
 
 ### Validation 데이터셋 - 문장 길이 분포
 <p align="center">
-  <img src="notebooks/images/Validation_smoothed_smoothed_0_300.png" alt="Validation Dataset Length Distribution 0-300" width="45%" />
+  <img src="notebooks/images/Validation_smoothed_0_300.png" alt="Validation Dataset Length Distribution 0-300" width="45%" />
   <img src="notebooks/images/Validation_histogram_step_300_1131.png" alt="Validation Dataset Length Distribution 300-1131" width="45%" />
 </p>
 
