@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="KSSDS",
-    version="1.0.4",
+    version="1.0.5",
     author="Gun Yang",
     author_email="ggomarobot@gmail.com",
     description="Korean Sentence Splitter for Dialogue Systems",
