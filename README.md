@@ -76,7 +76,9 @@ KSSDS는 Validation 및 Test 데이터셋에서 모든 문장을 300자 이하�
 
 
 ### Test 데이터셋에 대한 문장 길이 분포
-- **Test Set (43.5 시간)** - ([전문분야 심층 인터뷰 데이터](https://www.aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&dataSetSn=71481) + [방송콘텐츠 대화체 음성 인식 데이터](https://www.aihub.or.kr/aihubdata/data/view.do?dataSetSn=463) + [고령자 근현대 경험 기반 스토리 구술 데이터](https://aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&dataSetSn=71703))
+- **Test Set (43.5 시간)** - ([전문분야 심층 인터뷰 데이터](https://www.aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&dataSetSn=71481) +  
+  &nbsp;&nbsp;&nbsp;&nbsp;[방송콘텐츠 대화체 음성 인식 데이터](https://www.aihub.or.kr/aihubdata/data/view.do?dataSetSn=463) +  
+  &nbsp;&nbsp;&nbsp;&nbsp;[고령자 근현대 경험 기반 스토리 구술 데이터](https://aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&dataSetSn=71703))
 
 <p align="center">
   <img src="notebooks/images/TC_smoothed_0_300.png" alt="Test Dataset Length Distribution 0-300" width="100%" />
