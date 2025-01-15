@@ -20,11 +20,11 @@ KSSDS를 체험하거나 활용할 수 있는 방법은 다음 세 가지가 있
 
 1. **PyPI 설치 (권장)**  
    PyPI를 통해 KSSDS를 설치하여 문장 분리 기능을 빠르게 활용할 수 있습니다.  
-   PyPI 설치와 관련된 자세한 내용은 [루트 디렉토리 README의 PyPI 설치 섹션](../README.md#22-pypi에서-설치하기)을 참조하세요.
+   PyPI 설치와 관련된 자세한 내용은 [루트 디렉토리 README의 PyPI 설치 섹션](../README.md#32-pypi에서-설치하기)을 참조하세요.
 
 2. **GitHub 설치**  
    추가 학습, 평가, 고급 추론 설정 등을 원하시는 개발자분들은 GitHub 저장소를 클론하여 다양한 기능을 활용할 수 있습니다.  
-   GitHub 설치와 관련된 자세한 내용은 [루트 디렉토리 README의 GitHub 설치 섹션](../README.md#21-github에서-설치하기)을 참조하세요.
+   GitHub 설치와 관련된 자세한 내용은 [루트 디렉토리 README의 GitHub 설치 섹션](../README.md#31-github에서-설치하기)을 참조하세요.
 
 3. **Hugging Face Hub**  
    Hugging Face Hub의 네이티브 방식을 통해 KSSDS를 경험할 수 있습니다.  

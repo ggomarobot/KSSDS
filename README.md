@@ -24,9 +24,10 @@ AI HUB에서 제공하는 다양한 음성 및 텍스트 데이터를 LLM을 활
 
 ## Table of Contents
 1. [특징](#1-특징)
-2. [설치 및 사용 방법](#2-설치-및-사용-방법)
-3. [폴더 구조](#3-폴더-구조)
-4. [License](#4-license)
+2. [성능](#2-성능)
+3. [설치 및 사용 방법](#3-설치-및-사용-방법)
+4. [폴더 구조](#4-폴더-구조)
+5. [License](#5-license)
 
 ## 1. 특징
 
@@ -54,8 +55,21 @@ KSSDS는 한국어 대화 시스템 용 문장 분리에 특화된 딥러닝 기
 
 > 아직 부족한 부분이 많기에 개발자분들의 많은 관심과 기여 부탁드립니다.
 
+## 2. 성능
 
-## 2. 설치 및 사용 방법
+### Validation 데이터셋 - 문장 길이 분포
+<p align="center">
+  <img src="notebooks/images/Validation_smoothed_smoothed_0_300.png" alt="Validation Dataset Length Distribution 0-300" width="45%" />
+  <img src="notebooks/images/Validation_histogram_step_300_1131.png" alt="Validation Dataset Length Distribution 300-1131" width="45%" />
+</p>
+
+### Test 데이터셋 - 문장 길이 분포
+<p align="center">
+  <img src="notebooks/images/TC_smoothed_0_300.png" alt="Test Dataset Length Distribution 0-300" width="45%" />
+  <img src="notebooks/images/TC_histogram_step_300_8804.png" alt="Test Dataset Length Distribution 300-8804" width="45%" />
+</p>
+
+## 3. 설치 및 사용 방법
 
 KSSDS는 GitHub에서 코드를 직접 받아 사용하는 방법과, PyPI를 통해 패키지를 설치하여 사용하는 두 가지 방법을 제공합니다.  
 GitHub 설치는 추가 학습, 평가, 추론 등 모든 기능을 지원하며, PyPI 설치는 추론 작업에 적합합니다.
@@ -63,7 +77,7 @@ GitHub 설치는 추가 학습, 평가, 추론 등 모든 기능을 지원하며
 
 각각의 설치 및 사용 방법은 아래를 참고하세요.
 
-### 2.1 GitHub에서 설치하기
+### 3.1 GitHub에서 설치하기
 
 GitHub 저장소에서 코드를 다운로드하면, 추가 학습, 평가, 추론 등 다양한 작업을 지원하는 스크립트를 사용할 수 있습니다.
 
@@ -103,7 +117,7 @@ GitHub 저장소에서 코드를 다운로드하면, 추가 학습, 평가, 추�
     ```
     - `config/inference_config.yaml` 파일을 사용하여 입력 데이터 경로 및 출력 형식을 설정할 수 있습니다.
 
-### 2.2 PyPI에서 설치하기
+### 3.2 PyPI에서 설치하기
 
 PyPI를 통해 KSSDS 패키지를 설치하고 사용할 수 있습니다.  
 PyPI 설치는 문장 분리 (inference) 작업에만 적합합니다.  
@@ -178,7 +192,7 @@ for idx, sentence in enumerate(split_sentences):
     )
     ```
 
-## 3. 폴더 구조
+## 4. 폴더 구조
 ```
 .
 ├── config           # YAML configuration files for training, evaluation, and inference
@@ -200,7 +214,7 @@ for idx, sentence in enumerate(split_sentences):
 
 ```
 
-## 4. License
+## 5. License
 
 This project is licensed under the [MIT License](LICENSE). You are free to use, modify, and distribute this project, provided that proper credit is given to the original author. See the [LICENSE](LICENSE) file for more details.
 
