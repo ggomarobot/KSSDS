@@ -2,11 +2,11 @@ model_path: "ggomarobot/KSSDS"
 tokenizer_path: "ggomarobot/KSSDS"
 
 # input_tsv 와 input_sequence 중 한가지 옵션 택일 (tsv 파일 혹은 text string)
-input_tsv: "./tests/general_test.tsv"  # Input TSV file path (leave blank if using text)
+input_tsv: "./tests/Validation.tsv"  # Input TSV file path (leave blank if using text)
 input_sequence: "" # Input text for sentence splitting (leave blank if using input_tsv)
 
-output_tsv: "./KSSDS_final_general_test.tsv"  # Output TSV file path
-output_print: true # Whether split sentence outputs will be printed out on terminal
+output_tsv: "./KSSDS_final_Validation_test_rd_phrase.tsv"  # Output TSV file path
+output_print: false # Whether split sentence outputs will be printed out on terminal
 
 max_length: 512
 
