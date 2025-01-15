@@ -57,37 +57,33 @@ KSSDS는 한국어 대화 시스템 용 문장 분리에 특화된 딥러닝 기
 
 ## 2. 성능
 
-대화 시스템에서는 모델 입력 길이 제한으로 인해 음성 텍스트를 적절한 길이로 분리하는 것이 매우 중요합니다.
+대화 시스템에서는 모델 입력 길이 제한으로 인해 음성 텍스트를 적절한 길이로 분리하는 것이 매우 중요합니다.  
 후속 모델의 입력 길이를 초과하는 문장이 생성되면 서비스에 지장을 줄 수 있기 때문입니다.
 
-**KSSDS**는 Validation 및 Test 데이터셋에서 모든 문장을 300자 이하로 분리한 유일한 모델입니다.
+KSSDS는 Validation 및 Test 데이터셋에서 모든 문장을 300자 이하로 분리한 유일한 모델입니다.
 
 ### Validation 데이터셋에 대한 문장 길이 분포
-- **Validation Set (51시간)**  
-  [감정이 태깅된 자유 대화 (성인)](https://aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&dataSetSn=71631)
+- **Validation Set (51시간)** - ([감정이 태깅된 자유 대화 (성인)](https://aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&dataSetSn=71631))
 
 <p align="center">
   <img src="notebooks/images/Validation_smoothed_0_300.png" alt="Validation Dataset Length Distribution 0-300" width="100%" />
 </p>
 
-#### 각 모델별 가장 긴 문장 (Validation 데이터셋)
+#### 각 모델 별 가장 긴 문장
 | 모델                      | Gemini   | ChatGPT | KSS    | Kiwi   | KSSDS (w/o length filter) | KSSDS  |
 |---------------------------|----------|---------|--------|--------|---------------------------|--------|
 | 문장 길이 (공백 포함 글자 수) | 1,131    | 777     | 380    | 305    | 524                       | 266    |
 
 
 ### Test 데이터셋에 대한 문장 길이 분포
-- **Test Set (43.5 시간)**  
-  [전문분야 심층 인터뷰 데이터](https://www.aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&dataSetSn=71481)  
-  [방송콘텐츠 대화체 음성 인식 데이터](https://www.aihub.or.kr/aihubdata/data/view.do?dataSetSn=463)  
-  [고령자 근현대 경험 기반 스토리 구술 데이터](https://aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&dataSetSn=71703)
+- **Test Set (43.5 시간)** - ([전문분야 심층 인터뷰 데이터](https://www.aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&dataSetSn=71481) + [방송콘텐츠 대화체 음성 인식 데이터](https://www.aihub.or.kr/aihubdata/data/view.do?dataSetSn=463) + [고령자 근현대 경험 기반 스토리 구술 데이터](https://aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&dataSetSn=71703))
 
 <p align="center">
   <img src="notebooks/images/TC_smoothed_0_300.png" alt="Test Dataset Length Distribution 0-300" width="100%" />
 </p>
 
 
-#### 각 모델별 가장 긴 문장 (Test 데이터셋)
+#### 각 모델별 가장 긴 문장
 | 모델                      | ChatGPT | Gemini  | KSS    | Kiwi   | KSSDS (w/o length filter) | KSSDS  |
 |---------------------------|---------|---------|--------|--------|---------------------------|--------|
 | 문장 길이 (공백 포함 글자 수) | 8,804   | 705     | 467    | 467    | 401                       | 248    |
@@ -95,8 +91,8 @@ KSSDS는 한국어 대화 시스템 용 문장 분리에 특화된 딥러닝 기
 > **참고**:  
 > Validation과 Test 데이터셋에서 KSSDS는 대화 시스템의 제한을 충족하는 적절한 문장 분리 성능을 보여주었습니다.  
 > 추가적으로 분석된 그래프 및 데이터는 다음 Jupyter Notebook 파일에서 확인 가능합니다:  
-> - [Validation 데이터셋 분석](KSSDS/notebooks/KSSDS%20Final%20Report%20Validation.ipynb)  
-> - [Test 데이터셋 분석](KSSDS/notebooks/KSSDS%20Final%20Report%20TC.ipynb)
+> - [Validation 데이터셋 분석](notebooks/KSSDS%20Final%20Report%20Validation.ipynb)  
+> - [Test 데이터셋 분석](notebooks/KSSDS%20Final%20Report%20TC.ipynb)
 
 ## 3. 설치 및 사용 방법
 
