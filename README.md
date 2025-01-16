@@ -26,8 +26,9 @@ AI HUB에서 제공하는 다양한 음성 및 텍스트 데이터를 LLM을 활
 1. [특징](#1-특징)
 2. [성능](#2-성능)
 3. [설치 및 사용 방법](#3-설치-및-사용-방법)
-4. [폴더 구조](#4-폴더-구조)
-5. [License](#5-license)
+4. [호환성 안내](#4-호환성-안내)
+5. [폴더 구조](#5-폴더-구조)
+6. [License](#6-license)
 
 ## 1. 특징
 
@@ -217,8 +218,20 @@ for idx, sentence in enumerate(split_sentences):
         detection_threshold=100
     )
     ```
+## 4. 호환성 안내
 
-## 4. 폴더 구조
+This package has been tested on the following versions:
+
+- **Python**: 3.12.4  
+- **PyYAML**: 6.0.2  
+- **Transformers**: 4.42.4  
+- **scikit-learn**: 1.6.0  
+- **PyTorch**: 2.5.1  
+
+Compatibility with other versions within the specified range is assumed but not guaranteed.  
+If you encounter any issues with different versions, please [submit an issue](https://github.com/ggomarobot/KSSDS/issues).
+
+## 5. 폴더 구조
 ```
 .
 ├── config           # YAML configuration files for training, evaluation, and inference
@@ -240,7 +253,7 @@ for idx, sentence in enumerate(split_sentences):
 
 ```
 
-## 5. License
+## 6. License
 
 This project is licensed under the [MIT License](LICENSE). You are free to use, modify, and distribute this project, provided that proper credit is given to the original author. See the [LICENSE](LICENSE) file for more details.
 

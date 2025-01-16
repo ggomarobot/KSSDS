@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="KSSDS",
-    version="1.0.5",
+    version="1.0.6",
     author="Gun Yang",
     author_email="ggomarobot@gmail.com",
     description="Korean Sentence Splitter for Dialogue Systems",
@@ -13,12 +13,12 @@ setup(
     package_dir={"": "src"},
     include_package_data=True,
     install_requires=[
-        "GPUtil==1.4.0",
-        "numpy>=1.19.5,<2.0",  # Relaxed numpy constraint
-        "PyYAML==6.0.2",
-        "scikit_learn==1.6.0",
-        "torch==2.5.1",
-        "transformers==4.42.4",
+        "GPUtil>=1.4,<2.0",
+        "numpy>=1.19.5,<2.0",
+        "PyYAML>=6.0,<7.0",
+        "scikit_learn>=1.6,<2.0",
+        "torch>=2.5,<3.0",
+        "transformers>=4.42,<5.0",
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
