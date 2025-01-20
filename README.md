@@ -22,7 +22,7 @@ AI HUB에서 제공하는 다양한 음성 및 텍스트 데이터를 LLM을 활
 
 자세한 과정은 아래 프레젠테이션에서 확인하실 수 있습니다.  
 
-- **🖥 Mac 사용자:** [Google Slides 보기](https://docs.google.com/presentation/d/1V9sCm74hd6KNDXR9tax2LOpRzaaPxRyWvgAQyBQ9G9g/edit?usp=sharing)  
+- **🖥 Mac 사용자:** [Google Slides 보기](https://docs.google.com/presentation/d/1G7wtsq00hcrfua-SEhjDHonrAfIvW4YSDZ91PTIMGkQ/edit?usp=sharing)  
 - **💻 Windows 사용자:** [PDF 보기](https://drive.google.com/file/d/1s1CDisW-7BqPOlAC0hs_jNohA31Pn7D9/view?usp=sharing) *(Windows 환경에서 Google Slides의 글꼴 및 레이아웃 문제로 인해 PDF 버전 제공)* 
 
 ## Table of Contents
