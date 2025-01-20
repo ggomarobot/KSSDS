@@ -20,7 +20,10 @@ KSSDS는 HuggingFace Hub의 `lcw99/t5-base-korean-text-summary` [모델](https:/
 AI HUB에서 제공하는 다양한 음성 및 텍스트 데이터를 LLM을 활용해 개별 문장으로 분리(Pseudo-Label)한 후,  
 각 문장의 끝 토큰을 종결 어미로 간주하여 token classification 모델로 Fine-Tuning하여 제작되었습니다.
 
-자세한 과정은 이 [프레젠테이션 슬라이드](https://docs.google.com/presentation/d/1V9sCm74hd6KNDXR9tax2LOpRzaaPxRyWvgAQyBQ9G9g/edit?usp=sharing)에서 확인하실 수 있습니다.
+자세한 과정은 아래 프레젠테이션에서 확인하실 수 있습니다.  
+
+- **🖥 Mac 사용자:** [Google Slides 보기](https://docs.google.com/presentation/d/1V9sCm74hd6KNDXR9tax2LOpRzaaPxRyWvgAQyBQ9G9g/edit?usp=sharing)  
+- **💻 Windows 사용자:** [PDF 보기](https://drive.google.com/file/d/1s1CDisW-7BqPOlAC0hs_jNohA31Pn7D9/view?usp=sharing) *(Windows 환경에서 Google Slides의 글꼴 및 레이아웃 문제로 인해 PDF 버전 제공)* 
 
 ## Table of Contents
 1. [특징](#1-특징)
